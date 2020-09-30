@@ -11,7 +11,6 @@ def write_rivet_input(data_matrix,filtration_function,k,name):
     f.write(dim+newline)
     f.write("[-] "+filtration_name+newline)
     for row in filtration_matrix:
-        print(row)
         f.write(str(row[0]) + space + str(row[1]) + space + str(row[2])+ newline)
     return None
 

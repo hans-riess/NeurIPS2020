@@ -28,8 +28,8 @@ for category in os.listdir(main_path):
 random.shuffle(training_data)
 random.shuffle(testing_data)
 k=100
-x_bins = 100
-y_bins = 100
+x_bins = 10
+y_bins = 10
 
 for (point_cloud,label,index) in training_data:
     name = "training_point_cloud_" + str(label)+"-" + str(index)+".txt"
