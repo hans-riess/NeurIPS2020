@@ -4,18 +4,22 @@ from features import density_filtration
 from rivet import write_rivet_input,rivet_find_invariants
 import random
 
-main_path = "C:/Users/hansr/OneDrive/Documents/Research/NeurIPS20/code/data/ModelNet10/ModelNet10/"
+main_path = "/home/ubuntu/code/data/ModelNet10/ModelNet10/"
 training_data = []
 testing_data = []
 for category in os.listdir(main_path):
-    path_train = "C:/Users/hansr/OneDrive/Documents/Research/NeurIPS20/code/data/ModelNet10/ModelNet10/"+category+'/train/'
+    path_train = "/home/ubuntu/code/data/ModelNet10/ModelNet10/"+category+'/train/'
     for index,filename in enumerate(os.listdir(path_train)):
+        if filename == ".DS_Store":
+            continue
         path = path_train + filename
         print(filename)
         point_cloud = off_to_pointcloud(path)
         training_data.append((point_cloud,category,index))
-    path_test = "C:/Users/hansr/OneDrive/Documents/Research/NeurIPS20/code/data/ModelNet10/ModelNet10/"+category+'/test/'
+    path_test = "/home/ubuntu/code/data/ModelNet10/ModelNet10/"+category+'/test/'
     for index,filename in enumerate(os.listdir(path_test)):
+        if filename == ".DS_Store":
+            continue
         path = path_test + filename
         print(filename)
         point_cloud = off_to_pointcloud(path)
@@ -24,8 +28,8 @@ for category in os.listdir(main_path):
 random.shuffle(training_data)
 random.shuffle(testing_data)
 k=100
-x_bins = 20
-y_bins = 20
+x_bins = 100
+y_bins = 100
 
 for (point_cloud,label,index) in training_data:
     name = "training_point_cloud_" + str(label)+"-" + str(index)+".txt"
