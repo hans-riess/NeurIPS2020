@@ -37,7 +37,7 @@ class MeetConv2d(nn.Module):
     self.register_buffer('conv_x',conv_x)
     self.register_buffer('conv_y',conv_y)
     self.weights = nn.Parameter(torch.empty(kernel_x,kernel_y,in_features,out_features))
-    self.bias = nn.Parameter(torch.empty(signal_x,signal_y,out_features))
+    self.bias = nn.Parameter(torch.empty(out_features))
     self.initialize_weights()
 
   def initialize_weights(self):
@@ -48,7 +48,7 @@ class MeetConv2d(nn.Module):
     # X should be a (batchsize,signal_x,signal_y,in_features) tensor
     Y = torch.einsum("ixa,jyb,mijf,abzg->mxyg",self.conv_x,self.conv_y,X,self.weights)
     # Y is now (batchsize,signal_x,signal_y,out_features)
-    return Y + self.bias #this should broadcast over batchsize
+    return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
     kernel_x, kernel_y, in_features, out_features = self.weights.shape
@@ -66,7 +66,7 @@ class JoinConv2d(nn.Module):
     self.register_buffer('conv_x',conv_x)
     self.register_buffer('conv_y',conv_y)
     self.weights = nn.Parameter(torch.empty(kernel_x,kernel_y,in_features,out_features))
-    self.bias = nn.Parameter(torch.empty(signal_x,signal_y,out_features))
+    self.bias = nn.Parameter(torch.empty(out_features))
     self.initialize_weights()
 
   def initialize_weights(self):
@@ -77,7 +77,7 @@ class JoinConv2d(nn.Module):
     # X should be a (batchsize,signal_x,signal_y,in_features) tensor
     Y = torch.einsum("ixa,jyb,mijf,abzg->mxyg",self.conv_x,self.conv_y,X,self.weights)
     # Y is now (batchsize,signal_x,signal_y,out_features)
-    return Y + self.bias #this should broadcast over batchsize
+    return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
     kernel_x, kernel_y, in_features, out_features = self.weights.shape
