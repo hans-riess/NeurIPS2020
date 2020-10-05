@@ -48,7 +48,12 @@ class MeetConv2d(nn.Module):
     
   def forward(self, X):
     # X should be a (batchsize,signal_x,signal_y,in_features) tensor
-    Y = torch.einsum("ixa,jyb,mijf,abzg->mxyg",self.conv_x,self.conv_y,X,self.weights)
+    # Ok, this is gnarly. the contraction is M_ixa N_jyb X_mijf W_abfg.
+    # M and N are the 1d shift tensors. So M_ixa X_mijf has spatial indices x, a, for X(x ^ a, - )
+    # Similarly N_jyb X_mijf has spatial indices y, b, for X(-, y ^b).
+    # So M_ixa N_yjb X_mijf represents X(x^a,y^b). Now we take the summation over a, b with the convolution kernel.
+    # Finally, the summation over f takes the appropriate linear combination of all the convolutional kernels for this layer
+    Y = torch.einsum("ixa,jyb,mijf,abfg->mxyg",self.conv_x,self.conv_y,X,self.weights)
     # Y is now (batchsize,signal_x,signal_y,out_features)
     return Y + self.bias #this should broadcast over everything
   
@@ -77,7 +82,7 @@ class JoinConv2d(nn.Module):
     
   def forward(self, X):
     # X should be a (batchsize,signal_x,signal_y,in_features) tensor
-    Y = torch.einsum("ixa,jyb,mijf,abzg->mxyg",self.conv_x,self.conv_y,X,self.weights)
+    Y = torch.einsum("ixa,jyb,mijf,abfg->mxyg",self.conv_x,self.conv_y,X,self.weights)
     # Y is now (batchsize,signal_x,signal_y,out_features)
     return Y + self.bias #this should broadcast over everything
   
