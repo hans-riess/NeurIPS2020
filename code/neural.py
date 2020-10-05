@@ -26,6 +26,8 @@ def build_join_convolve_tensor(signal_dim,kernel_dim,kernel_loc):
           M[i,j,k] = 1
   return M
 
+# building these arrays beforehand means we don't have to try to write complicated torch invocations to extract the right elements, which might not work very well on the GPU. This way convolution is "just" a tensor contraction.
+
 class MeetConv2d(nn.Module):
   def __init__(self,signal_dim,kernel_dim,kernel_loc,in_features,out_features):
     super(MeetConv2d,self).__init__()
@@ -83,3 +85,29 @@ class JoinConv2d(nn.Module):
     kernel_x, kernel_y, in_features, out_features = self.weights.shape
     return 'join convolution layer with input_features={}, output_features={}, kernel_size={}'.format(
             in_features, out_features, (kernel_x,kernel_y))
+
+class LatticeCNN(nn.Module):
+  def __init__(self,signal_dim,kernel_dim,n_features):
+    super(LatticeCNN,self).__init__()
+    self.meet_conv = []
+    self.join_conv = []
+    for i in range(len(n_features)-1):
+      self.meet_conv.append(MeetConv2d(signal_dim,kernel_dim,(signal_dim[0]-kernel_dim[0],signal_dim[1]-kernel_dim[1]),n_features[i],n_features[i+1])) #the kernel should start at the right spot so it contains the maximal element
+      self.join_conv.append(JoinConv2d(signal_dim,kernel_dim,(0,0),n_features[i],n_features[i+1])) #the kernel should start at the minimal element
+
+  def forward(self,x):
+    for (mc,jc) in zip(self.meet_conv,self.join_conv):
+      x = F.relu(mc(x) + jc(x))
+    return 
+
+
+# These are straightforward to use. You instantiate a layer via, e.g.
+# conv = MeetConv2d((5,5),(2,2),(3,3),4,5)
+# this gives a layer which takes a signal on a 5x5 grid with 4 input features (and another possibly singleton dimension for minibatches) and convolves it with a 2x2 kernel that starts at (3,3), and outputs a 5x5 signal with 5 output features. if X is a tensor of the right dimension, just invoke
+# conv(X) to get the output.
+
+#similarly for LatticeCNN. This instantiates a stack of parallel meet and join convolutional layers:
+# cnn = LatticeCNN((5,5),(2,2),[4,5,6,7])
+# this gives a stack of 3 convolutional layers with relus after each. signals are all 5x5 (no pooling yet). the first layer has 4 input features and 5 output features, and so on
+
+# we may want to implement something more bespoke.
