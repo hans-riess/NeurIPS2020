@@ -114,3 +114,37 @@ class LatticeCNN(nn.Module):
 # this gives a stack of 3 convolutional layers with relus after each. signals are all 5x5 (no pooling yet). the first layer has 4 input features and 5 output features, and so on
 
 # we may want to implement something more bespoke.
+
+
+class LatticeClassifier(nn.Module):
+  def __init__(self,signal_dim,n_features,n_classes):
+    super(LatticeClassifier,self).__init__()
+    self.convolutions = LatticeCNN(signal_dim,(4,4),[n_features,16,16,8])
+    self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
+    self.fc2 = nn.Linear(32,32)
+    self.fc3 = nn.Linear(32,n_classes)
+
+  def forward(self,x):
+    batch_size = x.shape[0]
+    x = self.convolutions(x)
+    x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
+    x = F.relu(self.fc2(x))
+    x = self.fc3(x)
+    return
+
+class ConvClassifier(nn.Module):
+  def __init__(self,signal_dim,n_features,n_classes):
+    super(ConvClassifier,self).__init__()
+    self.convolutions = [nn.Conv2d(n_features,16,(4,4),1,padding=3),nn.Conv2d(16,16,(4,4),1,padding=3),nn.Conv2d(16,8,(4,4),1,padding=3)]
+    self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
+    self.fc2 = nn.Linear(32,32)
+    self.fc3 = nn.Linear(32,n_classes)
+
+  def forward(self,x):
+    batch_size = x.shape[0]
+    for c in self.convolutions:
+      x = F.relu(c(x))
+    x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
+    x = F.relu(self.fc2(x))
+    x = self.fc3(x)
+    return 
