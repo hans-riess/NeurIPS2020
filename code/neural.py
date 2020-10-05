@@ -54,7 +54,7 @@ class MeetConv2d(nn.Module):
     # So M_ixa N_yjb X_mijf represents X(x^a,y^b). Now we take the summation over a, b with the convolution kernel.
     # Finally, the summation over f takes the appropriate linear combination of all the convolutional kernels for this layer
     Y = torch.einsum("ixa,jyb,mfij,abfg->mgxy",self.conv_x,self.conv_y,X,self.weights)
-    # Y is now (batchsize,signal_x,signal_y,out_features)
+    # Y is now (batchsize,out_features,signal_x,signal_y)
     return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
@@ -82,7 +82,7 @@ class JoinConv2d(nn.Module):
   def forward(self, X):
     # X should be a (batchsize,in_features,signal_x,signal_y) tensor
     Y = torch.einsum("ixa,jyb,mfij,abfg->mgxy",self.conv_x,self.conv_y,X,self.weights)
-    # Y is now (batchsize,signal_x,signal_y,out_features)
+    # Y is now (batchsize,out_features,signal_x,signal_y)
     return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
