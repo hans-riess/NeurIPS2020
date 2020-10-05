@@ -53,14 +53,13 @@ class MeetConv2d(nn.Module):
     # Similarly N_jyb X_mijf has spatial indices y, b, for X(-, y ^b).
     # So M_ixa N_yjb X_mijf represents X(x^a,y^b). Now we take the summation over a, b with the convolution kernel.
     # Finally, the summation over f takes the appropriate linear combination of all the convolutional kernels for this layer
-    Y = torch.einsum("ixa,jyb,mfij,abfg->mxyg",self.conv_x,self.conv_y,X,self.weights)
+    Y = torch.einsum("ixa,jyb,mfij,abfg->mgxy",self.conv_x,self.conv_y,X,self.weights)
     # Y is now (batchsize,signal_x,signal_y,out_features)
     return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
     kernel_x, kernel_y, in_features, out_features = self.weights.shape
-    return 'meet convolution layer with input_features={}, output_features={}, kernel_size={}'.format(
-            in_features, out_features, (kernel_x,kernel_y))
+    return 'meet convolution layer with input_features={}, output_features={}, kernel_size={}'.format(in_features, out_features, (kernel_x,kernel_y))
 
 class JoinConv2d(nn.Module):
   def __init__(self,signal_dim,kernel_dim,kernel_loc,in_features,out_features):
@@ -82,14 +81,13 @@ class JoinConv2d(nn.Module):
     
   def forward(self, X):
     # X should be a (batchsize,in_features,signal_x,signal_y) tensor
-    Y = torch.einsum("ixa,jyb,mfij,abfg->mxyg",self.conv_x,self.conv_y,X,self.weights)
+    Y = torch.einsum("ixa,jyb,mfij,abfg->mgxy",self.conv_x,self.conv_y,X,self.weights)
     # Y is now (batchsize,signal_x,signal_y,out_features)
     return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
     kernel_x, kernel_y, in_features, out_features = self.weights.shape
-    return 'join convolution layer with input_features={}, output_features={}, kernel_size={}'.format(
-            in_features, out_features, (kernel_x,kernel_y))
+    return 'join convolution layer with input_features={}, output_features={}, kernel_size={}'.format(in_features, out_features, (kernel_x,kernel_y))
 
 class LatticeCNN(nn.Module):
   def __init__(self,signal_dim,kernel_dim,n_features):
