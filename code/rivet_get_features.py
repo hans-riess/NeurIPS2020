@@ -1,9 +1,10 @@
 import os
 from convert_point_cloud import off_to_pointcloud
 from features import density_filtration
-from rivet import write_rivet_input,rivet_find_invariants
+from rivet import write_rivet_input,rivet_find_invariants,parse_rivet_output
 import numpy as np
 import numpy.random as rd
+import torch
 
 main_path = "/home/ubuntu/code/data/ModelNet10/ModelNet10/"
 training_data = []
@@ -45,3 +46,20 @@ for category in os.listdir(main_path):
         for deg in range(1):
             output_name = '/home/ubuntu/code/invariants/testing_'+str(category)+ "_h"+ str(deg)+"_"+str(index)+".txt"
             rivet_find_invariants(name,output_name,deg,x_bins,y_bins)
+#----------------------------------------------------------------------------------------------------------------------
+data_path = "/home/ubuntu/code/data/ModelNet10/ModelNet10/"
+label_dict = {}
+for index,category in enumerate(os.listdir(data_path)):
+    v = torch.zeros(len(os.listdir(data_path)))
+    v[index] = 1.0
+    label_dict[category] = v
+
+path = '/home/ubuntu/code/invariants/'
+N = len(os.listdir(path))
+X = torch.empty(N,4,x_bins,y_bins)
+Y = torch.empty(N,10)
+for index,file_name in enumerate(os.listdir('/home/ubuntu/code/invariants/')):
+    X[index,:,:,:] = parse_rivet_output(file_name,x_bins,y_bins)
+    v = label_dict[filename.split('_')[1]]
+    Y[index,:] = v
+
