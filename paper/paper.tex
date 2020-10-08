@@ -28,13 +28,14 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{paralist}       % in-paragraph enumerations
 \usepackage{siunitx}        % SI units
-
+\usepackage{amsmath,amssymb}
 \urlstyle{same}
 
 %HANS's CONVENIENCES
+\usepackage{mymacros}
 
 
-\title{Sheaves, GNNs, and Pooling}
+\title{Multidimensional Persistence Module Classification via Lattice-Theoretic Convolutions}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -51,9 +52,12 @@
   Philadelphia, PA 19104 \\
   \texttt{hmr@seas.upenn.edu} \\
   % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
+  \And
+  Jakob Hansen \\
+  Department of Mathematics \\
+  Ohio State University \\
+  Columbus, OH 43210 \\
+  \texttt{hansen.612@osu.edu}
   % Address \\
   % \texttt{email} \\
   % \AND
@@ -83,17 +87,144 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Sheaves}
+\section{Introduction}
+
+Persistent homology has the ability to discern both the global topology \cite{}
+and local geometry \cite{} of finite metric spaces (e.g. embedded weighted
+graphs, point clouds in $\R^d$) making it a befitting feature for the purposes of
+training a neural network. Single-dimensional homological persistence has drawn
+recent attention in deep learning \cite{}. This is, in part, due to a wide range
+of efficient software libraries [?,?,?] for computing barcodes (in the
+``west-coast'' lingo) of filtrations (e.g. Rips, alpha, {C}ech, sub-levelset).
+Barcodes provide a compact shape descriptor for metric space data \cite{} that
+is stable with respect to Gromov-Hausdorff distance \cite{}. In a seminal paper
+\cite{}, Carlsson and Zomorodian show there is no such compact description for
+multi-parameter persistence.
+
+\section{Backgound}
+Due to space constraints, we can offer only a brief overview of multiparameter
+persistent homology. For a primer on persistent homology,
+see~\cite{ghrist_barcodes_2008,carlsson_topology_2009}; for multiparameter
+persistent homology, see~\cite{}. An introduction to lattices may be found in~\cite{}. 
+
+\subsection{Rips complexes and persistent homology}
+Let $(\mathcal M,d)$ be a finite metric space. The \introduce{Vietoris-Rips
+  complex} of $\mathcal M$ at scale $r$ is the abstract simplicial complex
+$\text{Rips}_r(\mathcal M)$ whose simplices are subsets of $\mathcal M$ of
+diameter at most $r$. There is a natural inclusion $\text{Rips}_r(\mathcal M)
+\to \text{Rips}_{r'}(\mathcal M)$ for $r \leq r'$.
+
+Applying the simplicial homology functor (with coefficients in a field $k$)
+$H_i$ to $\text{Rips}_r(\mathcal M)$ produces a sequence of vector spaces
+$PH_i(r)$. The inclusions $\text{Rips}_r(\mathcal M) \to
+\text{Rips}_{r'}(\mathcal M)$ induce maps $PH_i(r) \to PH_i(r')$, producing the
+data of \introduce{persistence module}. This structure can be compactly
+described as a functor from $\R$, viewed as a category via its standard order
+structure, to the category $\Vect_k$ of vector spaces over $k$. The simplicity
+of the category $\R$ gives these persistence modules simple structure: they
+decompose as direct sums of interval modules $I_{[a,b)}$, which have
+$I_{[a,b)}(r) = k$ for $a \leq r < b$ and zero otherwise. The maps are
+the identity where possible and the zero map otherwise.
+% is this the right shape for the intervals?
+
+This representation theoretic fact gives a representation\footnote{Heh.} of
+$\R$-indexed persistence modules via \introduce{barcodes} or
+\introduce{persistence diagrams}. Each bar $I_{[a,b)}$ in the barcode represents
+a homology class which is \introduce{born} at $a$ and \introduce{dies} at $b$.
+
+\subsection{Multiparameter persistence}
+The Rips construction produces a filtration of simplicial complexes from a
+finite metric space; it is natural to consider the behavior of the homology
+functor over a pair of coherent filtrations. Consider
+a finite metric space $(\mathcal M, d)$ and a filtration
+function $\rho:\mathcal M \to \R$. This data specifies a bifiltration of
+simplicial complexes given by
+\[\mathbb{X}_{r,t} = \text{Rips}_r{x \in \mathcal M \mid \rho(x) \leq t}.\]
+There is a natural inclusion $\mathbb{X}_{r,t} \hookrightarrow
+\mathbb{X}_{r',t'}$ whenever $(r,t) \leq (r',t')$ in the lattice $\R \times R$.
+Composing with the homology functor produces a 2-parameter persistence module
+\[PH_{i}: \R_+ \times \R \to \Vect; \quad (r,t) \mapsto H_i(X_{r,t}).\]
+If we assume that (i) $PH_i$ stabilizes for $r \geq R$ and $t \geq T$ for
+sufficiently large $R, T$ and (ii) the induced map on homology
+$H_i(\mathbb{X}_{r,t}) \to H_i(\mathbb{X}_{r',t'})$ is an isomorphism for all
+but finitely many pairs $(r,t) \leq (r',t')$, then we can restrict the domain of
+our persistence module $PH_i$---possibly after a reparameterization of the
+filtration---to a finite order lattice $L = [m] \times [n]$, where $[n] =
+\{0,1,2,\ldots,n\}$, obtaining a persistence module $M: L \to \Vect$.
+% I'm not sure this is the right finiteness condition. It's very strong for an
+% $\R^2$-indexed peristence module.
+% we can also pull a persistence module back over an inclusion of a finite subset...
+More generally, this model accepts as inputs signals on any finite lattice $L$
+with features extracted from a generalized persistence module supported on $L$.
+
+%% something about why lattice convolutions make sense to use...
+
+From $M$, we extract two types of features:
+ the \introduce{Hilbert function}
+  \[\text{Hilb}: L \to \Z_+;\quad \mathbf{x} \mapsto \dim(M_\mathbf{x}),\] and
+the \introduce{multi-graded Betti numbers}\footnote{\textit{Caveat lector:} the
+multi-graded Betti numbers are not the same as the topological Betti numbers
+$\beta_i(\mathbb{X}) = \dim(H_i(\mathbb{X}))$.} $\xi_j: L \to \Z_+$, for $j =
+0,1,2$. For $M = PH_i$ as above, the Hilbert function counts the number of
+connected components ($i=0$), cycles ($i=1$), or higher dimensional voids ($i >
+1$) of the complex $\mathbb{X}_{r,t}$ at each $(r,t) \in L$. The multi-graded
+Betti numbers, on the other hand, capture information about locations of births
+and deaths of persistence classes.
+
+\subsection{Lattice-theoretic signal processing}
 
 
-\section{Graph Neural Networks}
+\section{Lattice Convolutional Neural Networks}
 
-\section{Pooling}
+Convolutions for signals defined over $\R^n$ taken as an abelian group are
+widely used in signal processing. In particular, two-dimensional convolutions
+have served as an easily parameterized and efficient set of linear operations
+adapted to the structure of images. Their extreme utility in computer vision
+problems is owed to the translation equivariance properties of images: humans
+naturally recognize an image translated via an additive reparameterization as
+equivalent to the original.
 
-\begin{ack}
-I would like to thank...
-\end{ack}
+The data of a multidimensional persistence module is also indexed by $\R^n$ or a
+regular finite subset thereof, but its natural algebraic structure is not that
+of an abelian group. Rather, with its partial order structure, the indexing set
+is a lattice. In processing signals associated with the persistence module, it
+may be useful to take this structure into account rather than imposing the
+abelian group structure implied by standard convolutions.
 
-\
+To this end, we construct a lattice convolution-based neural network layer
+suitable for use with features originating from multidimensional persistence
+modules. 
+
+
+
+
+
+
+\section{Experiments}
+We use a small portion of the Princeton ModelNet dataset as a source of finite
+metric spaces. This dataset consists of hundreds of 3-dimensional CAD models
+representing objects from 40 classes. We select two of the classes and sample
+points from the 3d models to produce finite metric spaces embedded in $\R^3$.
+We then compute the corresponding multidimensional persistence modules, from
+which we produce features used as an input to a convolutional neural net
+classifier. 
+
+As the filter function on these data sets, we use
+\[\rho_{\text{codense}}(x;k) = \frac{k \diam(\mathcal M)}{\sum_{y \in N_k(x)}
+    d(x,y)},\]
+where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$. This is the
+\introduce{codensity} filtration, so named because the points in the densest
+regions of $\mathcal M$ will appear first. A folk theorem is that the
+two-parameter persistent homology of a Rips/codensity bifiltration is stable
+under non-Hausdorff perturbations: \textit{the (Rips) persistent homology of a
+  point sample and another obtained by adding a small number of points at random
+are close with respect to the interleaving distance}.
+
+
+
+\section{Discussion}
+
+\bibliographystyle{alpha}
+\bibliography{sheafspectra}
 
 \end{document}

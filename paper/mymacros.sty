@@ -1,0 +1,136 @@
+\ProvidesPackage{mymacros}[2018.04.24 v1.0 My own macros]
+\usepackage{stmaryrd}
+\usepackage{dsfont}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Pb}{\mathbb{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\providecommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Field}{\mathbf{k}}
+
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\TODO}{\textcolor{red}{TODO: }}
+
+\newcommand{\Borel}{\mathcal{B}_\R}
+
+\newcommand{\from}{\leftarrow}
+\providecommand{\introduce}[1]{\emph{#1}}
+\providecommand{\define}[1]{\emph{#1}}
+
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\supp}{supp}
+
+% Algebraic operators
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\shHom}{\underline{Hom}}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\img}{im}
+\DeclareMathOperator{\cok}{coker}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\hit}{ht}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\colim}{colim}
+
+%Geometry/Topology
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\maxidx}{maxidx}
+\DeclareMathOperator{\Co}{Co}
+\DeclareMathOperator{\face}{\trianglelefteqslant}
+\DeclareMathOperator{\faceone}{\trianglelefteqslant_1}
+\DeclareMathOperator{\st}{st}
+\providecommand{\realize}[1]{\left\lvert#1\right\rvert}
+
+% Category names
+\DeclareMathOperator{\Set}{\mathbf{Set}}
+\DeclareMathOperator{\Topcat}{\mathbf{Top}}
+\DeclareMathOperator{\Ab}{\mathbf{Ab}}
+\DeclareMathOperator{\Vect}{\mathbf{Vect}}
+\DeclareMathOperator{\Mod}{\mathbf{Mod}}
+\DeclareMathOperator{\Met}{\mathbf{Met}}
+\DeclareMathOperator{\Grp}{\mathbf{Grp}}
+\DeclareMathOperator{\Shv}{\mathbf{Shv}}
+\DeclareMathOperator{\PreShv}{\mathbf{PreShv}}
+\DeclareMathOperator{\PreCoShv}{\mathbf{PreCoShv}}
+\DeclareMathOperator{\Open}{\mathbf{Open}}
+\DeclareMathOperator{\Hilb}{\mathbf{Hilb}}
+\DeclareMathOperator{\FinHilb}{\mathbf{FinHilb}}
+
+\providecommand{\abs}[1]{\left\lvert#1\right\rvert}
+\providecommand{\norm}[1]{\lVert{#1}\rVert}
+\providecommand{\norms}[1]{\left\lVert{#1}\right\rVert}
+
+\providecommand{\gen}[1]{\langle #1 \rangle}
+\providecommand{\ip}[1]{\langle #1 \rangle}
+
+\DeclareMathOperator{\vol}{vol}
+
+% Semantic variables
+% Variables for sheaves
+\providecommand{\shfa}{\Fc}
+\providecommand{\shfb}{\Gc}
+\providecommand{\shfc}{\mathcal{E}}
+\providecommand{\constshf}[1]{\underline{#1}}
+\providecommand{\constcoshf}[1]{\overline{#1}}
+\providecommand{\bundlea}{\shfa}
+\providecommand{\bundleb}{\shfb}
+\providecommand{\coshfa}{{\hat{\Fc}}}
+\providecommand{\coshfb}{{\hat{\shfb}}}
+\providecommand{\appshf}[1]{{#1}'}
+
+
+% Variables for cell complexes
+\providecommand{\cpxa}{X}
+\providecommand{\cpxb}{Y}
+\providecommand{\covcpx}{E}
+\providecommand{\covbase}{B}
+\providecommand{\cella}{\sigma}
+\providecommand{\cellb}{\tau}
+\providecommand{\cellc}{\gamma}
+
+% Variables for graphs
+\providecommand{\vxa}{u}
+\providecommand{\vxb}{v}
+\providecommand{\vxc}{w}
+\providecommand{\gra}{G}
+\providecommand{\grb}{H}
+\providecommand{\covgr}{E}
+\providecommand{\covbase}{B}
+\providecommand{\wt}{w}
+\providecommand{\grdeg}{d}
+\providecommand{\edgea}{e}
+\providecommand{\edgeb}{f}
+
+% Scaling factors for O(n) bundles
+\providecommand{\scf}[1]{\alpha_{#1}} 
+
+% Laplacians
+\providecommand{\upL}[1]{\Delta^{#1}_{+}}
+\providecommand{\downL}[1]{\Delta^{#1}_{-}}
+\providecommand{\Lap}[1]{\Delta^{#1}}
+\providecommand{\nL}{\mathcal{L}}
+
+% Vector spaces
+\providecommand{\Vspace}{\mathbb{V}}
+
+\providecommand{\indv}[1]{\mathds{1}_{#1}}
+\providecommand{\RQ}[2]{R_{#1}(#2)}
+
+%\DeclareMathOperator{\vol}{\tevol}
+
+
