@@ -4,7 +4,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-
 def build_meet_convolve_tensor(signal_dim,kernel_dim,kernel_loc):
   # produces a tensor M_ijk such that the contraction M_ijk f_i is equal to f_{j ^ k}
   M = torch.zeros(signal_dim,signal_dim,kernel_dim)
@@ -19,6 +18,7 @@ def build_meet_convolve_tensor(signal_dim,kernel_dim,kernel_loc):
 def build_join_convolve_tensor(signal_dim,kernel_dim,kernel_loc):
   # produces a tensor M_ijk such that the contraction M_ijk f_i is equal to f_{j v k}
   M = torch.zeros(signal_dim,signal_dim,kernel_dim)
+  # this is an inefficient implementation, but should be fast enough for the sizes we're doing.
   for i in range(signal_dim):
     for j in range(i,signal_dim):
       for k in range(kernel_dim):
@@ -26,7 +26,10 @@ def build_join_convolve_tensor(signal_dim,kernel_dim,kernel_loc):
           M[i,j,k] = 1
   return M
 
-# building these arrays beforehand means we don't have to try to write complicated torch invocations to extract the right elements, which might not work very well on the GPU. This way convolution is "just" a tensor contraction.
+
+# to compute a convolution (f*g)_{xy}, we need to calculate the contraction M_{ixa} N_{jyb} f_{ij} g_{ab}
+def lattice_convolution_2d(convolve_x,convolve_y,signal,kernel):
+  return torch.einsum("ixa,jyb,ij,ab->xy",convolve_x,convolve_y,signal,kernel)
 
 class MeetConv2d(nn.Module):
   def __init__(self,signal_dim,kernel_dim,kernel_loc,in_features,out_features):
@@ -39,7 +42,7 @@ class MeetConv2d(nn.Module):
     self.register_buffer('conv_x',conv_x)
     self.register_buffer('conv_y',conv_y)
     self.weights = nn.Parameter(torch.empty(kernel_x,kernel_y,in_features,out_features))
-    self.bias = nn.Parameter(torch.empty(out_features))
+    self.bias = nn.Parameter(torch.empty(out_features,1,1))
     self.initialize_weights()
 
   def initialize_weights(self):
@@ -72,7 +75,7 @@ class JoinConv2d(nn.Module):
     self.register_buffer('conv_x',conv_x)
     self.register_buffer('conv_y',conv_y)
     self.weights = nn.Parameter(torch.empty(kernel_x,kernel_y,in_features,out_features))
-    self.bias = nn.Parameter(torch.empty(out_features))
+    self.bias = nn.Parameter(torch.empty(out_features,1,1))
     self.initialize_weights()
 
   def initialize_weights(self):
@@ -95,26 +98,13 @@ class LatticeCNN(nn.Module):
     self.meet_conv = []
     self.join_conv = []
     for i in range(len(n_features)-1):
-      self.meet_conv.append(MeetConv2d(signal_dim,kernel_dim,(signal_dim[0]-kernel_dim[0],signal_dim[1]-kernel_dim[1]),n_features[i],n_features[i+1])) #the kernel should start at the right spot so it contains the maximal element
-      self.join_conv.append(JoinConv2d(signal_dim,kernel_dim,(0,0),n_features[i],n_features[i+1])) #the kernel should start at the minimal element
+      self.meet_conv.append(MeetConv2d(signal_dim,kernel_dim,(signal_dim[0]-kernel_dim[0],signal_dim[1]-kernel_dim[1]),n_features[i],n_features[i+1]))
+      self.join_conv.append(JoinConv2d(signal_dim,kernel_dim,(0,0),n_features[i],n_features[i+1]))
 
   def forward(self,x):
     for (mc,jc) in zip(self.meet_conv,self.join_conv):
       x = F.relu(mc(x) + jc(x))
-    return 
-
-
-# These are straightforward to use. You instantiate a layer via, e.g.
-# conv = MeetConv2d((5,5),(2,2),(3,3),4,5)
-# this gives a layer which takes a signal on a 5x5 grid with 4 input features (and another possibly singleton dimension for minibatches) and convolves it with a 2x2 kernel that starts at (3,3), and outputs a 5x5 signal with 5 output features. if X is a tensor of the right dimension, just invoke
-# conv(X) to get the output.
-
-#similarly for LatticeCNN. This instantiates a stack of parallel meet and join convolutional layers:
-# cnn = LatticeCNN((5,5),(2,2),[4,5,6,7])
-# this gives a stack of 3 convolutional layers with relus after each. signals are all 5x5 (no pooling yet). the first layer has 4 input features and 5 output features, and so on
-
-# we may want to implement something more bespoke.
-
+    return x
 
 class LatticeClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
@@ -123,6 +113,7 @@ class LatticeClassifier(nn.Module):
     self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
+    self.sm = nn.Softmax(dim=0)
 
   def forward(self,x):
     batch_size = x.shape[0]
@@ -130,7 +121,8 @@ class LatticeClassifier(nn.Module):
     x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
     x = F.relu(self.fc2(x))
     x = self.fc3(x)
-    return
+    output = self.sm(x)
+    return output
 
 class ConvClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
@@ -139,7 +131,7 @@ class ConvClassifier(nn.Module):
     self.fc1 = nn.Linear(8*(signal_dim[0]-9)*(signal_dim[1]-9),32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
-
+    self.sm = nn.Softmax(dim=0)
   def forward(self,x):
     batch_size = x.shape[0]
     for c in self.convolutions:
@@ -147,4 +139,5 @@ class ConvClassifier(nn.Module):
     x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
     x = F.relu(self.fc2(x))
     x = self.fc3(x)
-    return 
+    output = self.sm(x)
+    return output
