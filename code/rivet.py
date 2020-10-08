@@ -20,15 +20,39 @@ def rivet_find_invariants(data_file_name,output_file_name, h_dim, x_bins,y_bins)
     os.system(cmd)
     return None
 
-def rivet_output_to_features(output_file_name):
-    return None
+def str2tuple(string):
+    return tuple([int(t) for t in string[1:-1].split(',')])
 
-output_file_name = "training_monitor_h0_0.txt"
-f = open(output_file_name,'r')
-lines = f.readlines()
-for i,line in enumerate(lines):
-    if line == "Dimensions > 0:":
-        break
-print(lines)
-for j in range(i,len(lines)):
-    print(lines[j])
+def parse_rivet_output(output_file_name, x_bins, y_bins):
+    f = open(output_file_name,'r')
+    lines = f.readlines()
+    X = torch.zeros(4,x_bins,y_bins)
+    d = 0
+    for line in lines:
+        if line.strip() == "x-grades":
+            continue
+        if line.strip() == "y-grades":
+            continue
+        if line.strip() == "Dimensions > 0:":
+            #print(line)
+            continue
+        if line.strip() == "xi_0:":
+            #print(line)
+            d+=1
+            continue
+        if line.strip() == "xi_1:":
+            #print(line)
+            d+=1
+            continue    
+        if line.strip() == "xi_2:":
+            #print(line)
+            d+=1
+            continue
+        if line.strip() == '':
+            continue
+            
+        if line.strip()[0] == '(' and line.strip()[-1] == ')':
+            (x,y,f_xy) = str2tuple(line.strip())
+            X[d,x,y] = float(f_xy)
+    return X
+

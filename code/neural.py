@@ -113,6 +113,7 @@ class LatticeClassifier(nn.Module):
     self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
+    self.sm = nn.Softmax(dim=0)
 
   def forward(self,x):
     batch_size = x.shape[0]
@@ -120,7 +121,8 @@ class LatticeClassifier(nn.Module):
     x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
     x = F.relu(self.fc2(x))
     x = self.fc3(x)
-    return x
+    output = self.sm(x)
+    return output
 
 class ConvClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
@@ -129,7 +131,7 @@ class ConvClassifier(nn.Module):
     self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
-
+    self.sm = nn.Softmax(dim=0)
   def forward(self,x):
     batch_size = x.shape[0]
     for c in self.convolutions:
@@ -137,4 +139,5 @@ class ConvClassifier(nn.Module):
     x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
     x = F.relu(self.fc2(x))
     x = self.fc3(x)
-    return x
+    output = self.sm(x)
+    return output
