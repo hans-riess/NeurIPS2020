@@ -135,8 +135,8 @@ class LatticeClassifier(nn.Module):
 class ConvClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
     super(ConvClassifier,self).__init__()
-    self.convolutions = [nn.Conv2d(n_features,16,(4,4),1,padding=3),nn.Conv2d(16,16,(4,4),1,padding=3),nn.Conv2d(16,8,(4,4),1,padding=3)]
-    self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
+    self.convolutions = [nn.Conv2d(n_features,16,(4,4),1),nn.Conv2d(16,16,(4,4),1),nn.Conv2d(16,8,(4,4),1)]
+    self.fc1 = nn.Linear(8*(signal_dim[0]-9)*(signal_dim[1]-9),32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
 
