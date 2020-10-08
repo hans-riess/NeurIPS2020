@@ -57,7 +57,7 @@ class MeetConv2d(nn.Module):
     # So M_ixa N_yjb X_mijf represents X(x^a,y^b). Now we take the summation over a, b with the convolution kernel.
     # Finally, the summation over f takes the appropriate linear combination of all the convolutional kernels for this layer
     Y = torch.einsum("ixa,jyb,mfij,abfg->mgxy",self.conv_x,self.conv_y,X,self.weights)
-    # Y is now (batchsize,signal_x,signal_y,out_features)
+    # Y is now (batchsize,out_features,signal_x,signal_y)
     return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
@@ -85,7 +85,7 @@ class JoinConv2d(nn.Module):
   def forward(self, X):
     # X should be a (batchsize,in_features,signal_x,signal_y) tensor
     Y = torch.einsum("ixa,jyb,mfij,abfg->mgxy",self.conv_x,self.conv_y,X,self.weights)
-    # Y is now (batchsize,signal_x,signal_y,out_features)
+    # Y is now (batchsize,out_features,signal_x,signal_y)
     return Y + self.bias #this should broadcast over everything
   
   def extra_repr(self):
@@ -127,8 +127,8 @@ class LatticeClassifier(nn.Module):
 class ConvClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
     super(ConvClassifier,self).__init__()
-    self.convolutions = [nn.Conv2d(n_features,16,(4,4),1,padding=3),nn.Conv2d(16,16,(4,4),1,padding=3),nn.Conv2d(16,8,(4,4),1,padding=3)]
-    self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
+    self.convolutions = [nn.Conv2d(n_features,16,(4,4),1),nn.Conv2d(16,16,(4,4),1),nn.Conv2d(16,8,(4,4),1)]
+    self.fc1 = nn.Linear(8*(signal_dim[0]-9)*(signal_dim[1]-9),32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
     self.sm = nn.Softmax(dim=0)
