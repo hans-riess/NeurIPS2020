@@ -98,8 +98,8 @@ class LatticeCNN(nn.Module):
     self.meet_conv = []
     self.join_conv = []
     for i in range(len(n_features)-1):
-      self.meet_conv.append(MeetConv2d(signal_dim,kernel_dim,(signal_dim[0]-kernel_dim[0],signal_dim[1]-kernel_dim[1]),n_features[i],n_features[i+1]))
-      self.join_conv.append(JoinConv2d(signal_dim,kernel_dim,(0,0),n_features[i],n_features[i+1]))
+      self.meet_conv.append(MeetConv2d(signal_dim,kernel_dim,(signal_dim[0]-kernel_dim[0],signal_dim[1]-kernel_dim[1]),n_features[i],n_features[i+1]).cuda())
+      self.join_conv.append(JoinConv2d(signal_dim,kernel_dim,(0,0),n_features[i],n_features[i+1]).cuda())
 
   def forward(self,x):
     for (mc,jc) in zip(self.meet_conv,self.join_conv):
@@ -110,10 +110,10 @@ class LatticeClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
     super(LatticeClassifier,self).__init__()
     self.convolutions = LatticeCNN(signal_dim,(4,4),[n_features,16,16,8])
+    self.convolutions.cuda()
     self.fc1 = nn.Linear(8*signal_dim[0]*signal_dim[1],32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
-    self.sm = nn.Softmax(dim=0)
 
   def forward(self,x):
     batch_size = x.shape[0]
@@ -121,8 +121,7 @@ class LatticeClassifier(nn.Module):
     x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
     x = F.relu(self.fc2(x))
     x = self.fc3(x)
-    output = self.sm(x)
-    return output
+    return x
 
 class ConvClassifier(nn.Module):
   def __init__(self,signal_dim,n_features,n_classes):
@@ -131,7 +130,6 @@ class ConvClassifier(nn.Module):
     self.fc1 = nn.Linear(8*(signal_dim[0]-9)*(signal_dim[1]-9),32)
     self.fc2 = nn.Linear(32,32)
     self.fc3 = nn.Linear(32,n_classes)
-    self.sm = nn.Softmax(dim=0)
   def forward(self,x):
     batch_size = x.shape[0]
     for c in self.convolutions:
@@ -139,5 +137,4 @@ class ConvClassifier(nn.Module):
     x = F.relu(self.fc1(torch.reshape(x,(batch_size,-1))))
     x = F.relu(self.fc2(x))
     x = self.fc3(x)
-    output = self.sm(x)
-    return output
+    return x
