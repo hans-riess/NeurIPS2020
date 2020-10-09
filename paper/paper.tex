@@ -6,7 +6,7 @@
 % before loading neurips_2020
 
 % ready for submission
-% \usepackage{neurips_2020}
+%\usepackage{neurips_2020_tda}
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
@@ -93,18 +93,18 @@ Persistent homology has the ability to discern both the global topology \cite{}
 and local geometry \cite{} of finite metric spaces (e.g. embedded weighted
 graphs, point clouds in $\R^d$) making it a befitting feature for the purposes of
 training a neural network. Single-dimensional homological persistence has drawn
-recent attention in deep learning \cite{}. This is, in part, due to a wide range
-of efficient software libraries [?,?,?] for computing barcodes (in the
+recent attention in deep learning \cite{hofer_deep_2017,pun_persistent-homology-based_2018,bruel-gabrielsson_topology_2020}. This is, in part, due to a wide range
+of efficient software libraries \cite{otter_roadmap_2017,henselman_matroid_2017,bauer_ripser:_2019} for computing barcodes (in the
 ``west-coast'' lingo) of filtrations (e.g. Rips, alpha, {C}ech, sub-levelset).
-Barcodes provide a compact shape descriptor for metric space data \cite{} that
+Barcodes provide a compact shape descriptor for metric space data that
 is stable with respect to Gromov-Hausdorff distance \cite{}. In a seminal paper
-\cite{}, Carlsson and Zomorodian show there is no such compact description for
+\cite{carlsson_theory_2009}, Carlsson and Zomorodian show there is no such compact description for
 multi-parameter persistence.
 
 \section{Backgound}
 Due to space constraints, we can offer only a brief overview of multiparameter
 persistent homology. For a primer on persistent homology,
-see~\cite{ghrist_barcodes_2008,carlsson_topology_2009}; for multiparameter
+see~\cite{ghrist_barcodes:_2008,carlsson_topology_2009}; for multiparameter
 persistent homology, see~\cite{}. An introduction to lattices may be found in~\cite{}. 
 
 \subsection{Rips complexes and persistent homology}
@@ -159,7 +159,8 @@ with features extracted from a generalized persistence module supported on $L$.
 
 %% something about why lattice convolutions make sense to use...
 
-From $M$, we extract two types of features:
+While there does not exist a discrete set of invariants for $M$, we can extract
+meaningful features. Two particularly informative types of features are 
  the \introduce{Hilbert function}
   \[\text{Hilb}: L \to \Z_+;\quad \mathbf{x} \mapsto \dim(M_\mathbf{x}),\] and
 the \introduce{multi-graded Betti numbers}\footnote{\textit{Caveat lector:} the
@@ -171,10 +172,10 @@ connected components ($i=0$), cycles ($i=1$), or higher dimensional voids ($i >
 Betti numbers, on the other hand, capture information about locations of births
 and deaths of persistence classes.
 
-\subsection{Lattice-theoretic signal processing}
+\subsection{Lattice-theoretic signal processing}\label{sec:latticeconv}
 
 
-\section{Lattice Convolutional Neural Networks}
+\section{Lattice Convolutional Neural Networks}\label{sec:latticeCNN}
 
 Convolutions for signals defined over $\R^n$ taken as an abelian group are
 widely used in signal processing. In particular, two-dimensional convolutions
@@ -193,7 +194,38 @@ abelian group structure implied by standard convolutions.
 
 To this end, we construct a lattice convolution-based neural network layer
 suitable for use with features originating from multidimensional persistence
-modules. 
+modules. We specialize the convolutions described in
+Section~\ref{sec:latticeconv} to the particular case of regular finite
+sublattices of $\R^2$. The meet and join operations are easily computed
+elementwise:
+\[(r,t) \wedge (r',t') = (\min(r,r'),\min(t,t'));\quad (r,t)\vee (r',t') =
+  (\max(r,r'),\max(t,t')).\]
+
+A lattice convolution layer takes as input an $N_{\text{in}}$-dimensional signal
+$f : [m] \times [n] \to \R^{N_{\text{in}}}$ and outputs an
+$N_{\text{out}}$-dimensional signal $ [m] \times [n] \to
+\R^{N_{\text{out}}}$. The layer's parameters are given by a function $g: [m]
+\times [n] \to \R^{N_{\text{out}}\times N_{\text{in}}}$. If we label the
+entries of $f(x,y)$ by $f_i$ and the entries of $g(x,y)$ by $g^i_j$ The layer then acts by
+\[\text{MeetConv}(f)(x,y)^j = \sum_{i} (f_i \ast_{\wedge} g^i_j)(x,y) = \sum_i
+  \sum_{(a,b) \in [m]\times [n]} f_i(x \wedge a, y \wedge b)g^i_j(a,b)\]
+in the case of convolution with respect to the meet operation, and
+\[\text{JoinConv}(f)(x,y)^j = \sum_{i} (f_i \ast_{\vee} g^i_j)(x,y) = \sum_i
+  \sum_{(a,b) \in [m]\times [n]} f_i(x \vee a, y \vee b)g^i_j(a,b)\]
+in the case of convolution with respect to the join operation.
+
+Convolutional neural networks are uesful in part because the convolution kernels
+(here the functions $g$) can have very small support, enforcing locality and
+reducing the number of parameters that must be learned. In the standard
+convolutional setting, these kernels are implicitly supported in a neighborhood
+of the origin, but the location of the kernel is not usually explicitly
+specified. In the lattice setting, we do need to specify where the kernel
+resides. Just as when we treat our domain as an abelian group, the kernel should
+be supported near the identity, when we treat our domain as a lattice, the
+kernel should be supported near the neutral element of the operation. That is,
+for a meet convolution, $g$ should have support near the maximum $(m,n)$, and
+for a join convolution, $g$ should have support near the minimum $(0,0)$.
+
 
 
 
@@ -207,7 +239,13 @@ representing objects from 40 classes. We select two of the classes and sample
 points from the 3d models to produce finite metric spaces embedded in $\R^3$.
 We then compute the corresponding multidimensional persistence modules, from
 which we produce features used as an input to a convolutional neural net
-classifier. 
+classifier.
+
+The pipline thus begins with a 3d model, which is sampled to produce a point
+cloud in $\R^3$. This point cloud then produces a bifiltered simplicial complex,
+whose persistent homology we calculate using RIVET~\cite{lesnick_interactive_2015}, producing
+lattice-indexed signals given by the Hilbert function and the multi-graded Betti
+numbers. These are then passed to the classifier, which produces a class prediction.
 
 As the filter function on these data sets, we use
 \[\rho_{\text{codense}}(x;k) = \frac{k \diam(\mathcal M)}{\sum_{y \in N_k(x)}
@@ -220,11 +258,19 @@ under non-Hausdorff perturbations: \textit{the (Rips) persistent homology of a
   point sample and another obtained by adding a small number of points at random
 are close with respect to the interleaving distance}.
 
+We compare the performance of two convolutional networks on this classification
+task. One uses the lattice-convolution based layers described in
+Section~\ref{sec:latticeCNN}, and the other uses standard convolutional layers.
+Each has three convolutional layers followed by three fully connected layers.
+
+
 
 
 \section{Discussion}
+Discuss.
 
-\bibliographystyle{alpha}
-\bibliography{sheafspectra}
+
+\bibliographystyle{plain}
+\bibliography{latticenn}
 
 \end{document}

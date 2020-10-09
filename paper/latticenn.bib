@@ -1,0 +1,173 @@
+
+@article{bauer_ripser:_2019,
+  title = {Ripser: Efficient Computation of {{Vietoris}}-{{Rips}} Persistence Barcodes},
+  shorttitle = {Ripser},
+  author = {Bauer, Ulrich},
+  year = {2019},
+  month = aug,
+  abstract = {We present an algorithm for the computation of Vietoris-Rips persistence barcodes and describe its implementation in the software Ripser. The method relies on implicit representations of the coboundary operator and of the filtration order of the simplices, avoiding the explicit construction and storage of the filtration coboundary matrix. Our implementation shows substantial improvements over previous software both in time and memory usage.},
+  archivePrefix = {arXiv},
+  eprint = {1908.02518},
+  eprinttype = {arxiv},
+  journal = {arXiv:1908.02518 [cs, math]},
+  keywords = {Computer Science - Computational Geometry,Computer Science - Mathematical Software,Mathematics - Algebraic Topology},
+  primaryClass = {cs, math}
+}
+
+@article{bruel-gabrielsson_topology_2020,
+  title = {A {{Topology Layer}} for {{Machine Learning}}},
+  author = {{Br{\"u}el-Gabrielsson}, Rickard and Nelson, Bradley J. and Dwaraknath, Anjan and Skraba, Primoz and Guibas, Leonidas J. and Carlsson, Gunnar},
+  year = {2020},
+  month = apr,
+  abstract = {Topology applied to real world data using persistent homology has started to find applications within machine learning, including deep learning. We present a differentiable topology layer that computes persistent homology based on level set filtrations and edge-based filtrations. We present three novel applications: the topological layer can (i) regularize data reconstruction or the weights of machine learning models, (ii) construct a loss on the output of a deep generative network to incorporate topological priors, and (iii) perform topological adversarial attacks on deep networks trained with persistence features. The code (www.github.com/bruel-gabrielsson/TopologyLayer) is publicly available and we hope its availability will facilitate the use of persistent homology in deep learning and other gradient based applications.},
+  archivePrefix = {arXiv},
+  eprint = {1905.12200},
+  eprinttype = {arxiv},
+  journal = {arXiv:1905.12200 [cs, math, stat]},
+  keywords = {Computer Science - Machine Learning,Mathematics - Algebraic Topology,Statistics - Machine Learning},
+  primaryClass = {cs, math, stat}
+}
+
+@article{carlsson_theory_2009,
+  title = {The {{Theory}} of {{Multidimensional Persistence}}},
+  author = {Carlsson, Gunnar and Zomorodian, Afra},
+  year = {2009},
+  month = jul,
+  volume = {42},
+  pages = {71--93},
+  issn = {0179-5376, 1432-0444},
+  abstract = {Persistent homology captures the topology of a filtration\textemdash a one-parameter family of increasing spaces\textemdash in terms of a complete discrete invariant. This invariant is a multiset of intervals that denote the lifetimes of the topological entities within the filtration. In many applications of topology, we need to study a multifiltration: a family of spaces parameterized along multiple geometric dimensions. In this paper, we show that no similar complete discrete invariant exists for multidimensional persistence. Instead, we propose the rank invariant, a discrete invariant for the robust estimation of Betti numbers in a multifiltration, and prove its completeness in one dimension.},
+  journal = {Discrete \& Computational Geometry},
+  language = {en},
+  number = {1}
+}
+
+@article{carlsson_topology_2009,
+  title = {Topology and Data},
+  author = {Carlsson, Gunnar},
+  year = {2009},
+  volume = {46},
+  pages = {255--308},
+  journal = {Bulletin of the American Mathematical Society}
+}
+
+@article{ghrist_barcodes:_2008,
+  title = {Barcodes: The Persistent Topology of Data},
+  author = {Ghrist, Robert},
+  year = {2008},
+  volume = {45},
+  pages = {61--75},
+  journal = {Bulletin of the American Mathematical Society}
+}
+
+@article{henselman_matroid_2017,
+  title = {Matroid {{Filtrations}} and {{Computational Persistent Homology}}},
+  author = {Henselman, Gregory and Ghrist, Robert},
+  year = {2017},
+  month = oct,
+  abstract = {This technical report introduces a novel approach to efficient computation in homological algebra over fields, with particular emphasis on computing the persistent homology of a filtered topological cell complex. The algorithms here presented rely on a novel relationship between discrete Morse theory, matroid theory, and classical matrix factorizations. We provide background, detail the algorithms, and benchmark the software implementation in the Eirene package.},
+  archivePrefix = {arXiv},
+  eprint = {1606.00199},
+  eprinttype = {arxiv},
+  journal = {arXiv:1606.00199 [math]},
+  keywords = {Mathematics - Algebraic Topology,Mathematics - Combinatorics},
+  primaryClass = {math}
+}
+
+@incollection{hofer_deep_2017,
+  title = {Deep {{Learning}} with {{Topological Signatures}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}} 30},
+  author = {Hofer, Christoph and Kwitt, Roland and Niethammer, Marc and Uhl, Andreas},
+  editor = {Guyon, I. and Luxburg, U. V. and Bengio, S. and Wallach, H. and Fergus, R. and Vishwanathan, S. and Garnett, R.},
+  year = {2017},
+  pages = {1634--1644},
+  publisher = {{Curran Associates, Inc.}}
+}
+
+@article{hofer_learning_nodate,
+  title = {Learning {{Representations}} of {{Persistence Barcodes}}},
+  author = {Hofer, Christoph D and Kwitt, Roland and Niethammer, Marc},
+  pages = {45},
+  abstract = {We consider the problem of supervised learning with summary representations of topological features in data. In particular, we focus on persistent homology, the prevalent tool used in topological data analysis. As the summary representations, referred to as barcodes or persistence diagrams, come in the unusual format of multi sets, equipped with computationally expensive metrics, they can not readily be processed with conventional learning techniques. While different approaches to address this problem have been proposed, either in the context of kernel-based learning, or via carefully designed vectorization techniques, it remains an open problem how to leverage advances in representation learning via deep neural networks. Appropriately handling topological summaries as input to neural networks would address the disadvantage of previous strategies which handle this type of data in a task-agnostic manner. In particular, we propose an approach that is designed to learn a task-specific representation of barcodes. In other words, we aim to learn a representation that adapts to the learning problem while, at the same time, preserving theoretical properties (such as stability). This is done by projecting barcodes into a finite dimensional vector space using a collection of parametrized functionals, so called structure elements, for which we provide a generic construction scheme. A theoretical analysis of this approach reveals sufficient conditions to preserve stability, and also shows that different choices of structure elements lead to great differences with respect to their suitability for numerical optimization. When implemented as a neural network input layer, our approach demonstrates compelling performance on various types of problems, including graph classification and eigenvalue prediction, the classification of 2D/3D object shapes and recognizing activities from EEG signals.},
+  language = {en}
+}
+
+@article{lesnick_interactive_2015,
+  title = {Interactive {{Visualization}} of 2-{{D Persistence Modules}}},
+  author = {Lesnick, Michael and Wright, Matthew},
+  year = {2015},
+  month = dec,
+  abstract = {The goal of this work is to extend the standard persistent homology pipeline for exploratory data analysis to the 2-D persistence setting, in a practical, computationally efficient way. To this end, we introduce RIVET, a software tool for the visualization of 2-D persistence modules, and present mathematical foundations for this tool. RIVET provides an interactive visualization of the barcodes of 1-D affine slices of a 2-D persistence module \$M\$. It also computes and visualizes the dimension of each vector space in \$M\$ and the bigraded Betti numbers of \$M\$. At the heart of our computational approach is a novel data structure based on planar line arrangements, on which we can perform fast queries to find the barcode of any slice of \$M\$. We present an efficient algorithm for constructing this data structure and establish bounds on its complexity.},
+  archivePrefix = {arXiv},
+  eprint = {1512.00180},
+  eprinttype = {arxiv},
+  journal = {arXiv:1512.00180 [cs, math]},
+  keywords = {Computer Science - Computational Geometry,Mathematics - Algebraic Topology,Mathematics - Commutative Algebra},
+  primaryClass = {cs, math}
+}
+
+@article{lesnick_theory_2015,
+  title = {The {{Theory}} of the {{Interleaving Distance}} on {{Multidimensional Persistence Modules}}},
+  author = {Lesnick, Michael},
+  year = {2015},
+  month = jun,
+  volume = {15},
+  pages = {613--650},
+  issn = {1615-3383},
+  abstract = {In 2009, Chazal et al. introduced \$\$\textbackslash epsilon \$\${$\epsilon$}-interleavings of persistence modules. \$\$\textbackslash epsilon \$\${$\epsilon$}-interleavings induce a pseudometric \$\$d\_\textbackslash mathrm\{I\}\$\$dIon (isomorphism classes of) persistence modules, the interleaving distance. The definitions of \$\$\textbackslash epsilon \$\${$\epsilon$}-interleavings and \$\$d\_\textbackslash mathrm\{I\}\$\$dIgeneralize readily to multidimensional persistence modules. In this paper, we develop the theory of multidimensional interleavings, with a view toward applications to topological data analysis. We present four main results. First, we show that on 1-D persistence modules, \$\$d\_\textbackslash mathrm\{I\}\$\$dIis equal to the bottleneck distance \$\$d\_\textbackslash mathrm\{B\}\$\$dB. This result, which first appeared in an earlier preprint of this paper, has since appeared in several other places, and is now known as the isometry theorem. Second, we present a characterization of the \$\$\textbackslash epsilon \$\${$\epsilon$}-interleaving relation on multidimensional persistence modules. This expresses transparently the sense in which two \$\$\textbackslash epsilon \$\${$\epsilon$}-interleaved modules are algebraically similar. Third, using this characterization, we show that when we define our persistence modules over a prime field, \$\$d\_\textbackslash mathrm\{I\}\$\$dIsatisfies a universality property. This universality result is the central result of the paper. It says that \$\$d\_\textbackslash mathrm\{I\}\$\$dIsatisfies a stability property generalizing one which \$\$d\_\textbackslash mathrm\{B\}\$\$dBis known to satisfy, and that in addition, if \$\$d\$\$dis any other pseudometric on multidimensional persistence modules satisfying the same stability property, then \$\$d\textbackslash le d\_\textbackslash mathrm\{I\}\$\$d{$\leq$}dI. We also show that a variant of this universality result holds for \$\$d\_\textbackslash mathrm\{B\}\$\$dB, over arbitrary fields. Finally, we show that \$\$d\_\textbackslash mathrm\{I\}\$\$dIrestricts to a metric on isomorphism classes of finitely presented multidimensional persistence modules.},
+  journal = {Foundations of Computational Mathematics},
+  language = {en},
+  number = {3}
+}
+
+@article{liu_applying_2016,
+  title = {Applying {{Topological Persistence}} in {{Convolutional Neural Network}} for {{Music Audio Signals}}},
+  author = {Liu, Jen-Yu and Jeng, Shyh-Kang and Yang, Yi-Hsuan},
+  year = {2016},
+  month = aug,
+  abstract = {Recent years have witnessed an increased interest in the application of persistent homology, a topological tool for data analysis, to machine learning problems. Persistent homology is known for its ability to numerically characterize the shapes of spaces induced by features or functions. On the other hand, deep neural networks have been shown effective in various tasks. To our best knowledge, however, existing neural network models seldom exploit shape information. In this paper, we investigate a way to use persistent homology in the framework of deep neural networks. Specifically, we propose to embed the so-called "persistence landscape," a rather new topological summary for data, into a convolutional neural network (CNN) for dealing with audio signals. Our evaluation on automatic music tagging, a multi-label classification task, shows that the resulting persistent convolutional neural network (PCNN) model can perform significantly better than state-of-the-art models in prediction accuracy. We also discuss the intuition behind the design of the proposed model, and offer insights into the features that it learns.},
+  archivePrefix = {arXiv},
+  eprint = {1608.07373},
+  eprinttype = {arxiv},
+  journal = {arXiv:1608.07373 [cs]},
+  keywords = {Computer Science - Computational Geometry,Computer Science - Multimedia,Computer Science - Neural and Evolutionary Computing,Computer Science - Sound},
+  primaryClass = {cs}
+}
+
+@article{otter_roadmap_2017,
+  title = {A Roadmap for the Computation of Persistent Homology},
+  author = {Otter, Nina and Porter, Mason A. and Tillmann, Ulrike and Grindrod, Peter and Harrington, Heather A.},
+  year = {2017},
+  month = aug,
+  volume = {6},
+  pages = {17},
+  issn = {2193-1127},
+  abstract = {Persistent homology (PH) is a method used in topological data analysis (TDA) to study qualitative features of data that persist across multiple scales. It is robust to perturbations of input data, independent of dimensions and coordinates, and provides a compact representation of the qualitative features of the input. The computation of PH is an open area with numerous important and fascinating challenges. The field of PH computation is evolving rapidly, and new algorithms and software implementations are being updated and released at a rapid pace. The purposes of our article are to (1) introduce theory and computational methods for PH to a broad range of computational scientists and (2) provide benchmarks of state-of-the-art implementations for the computation of PH. We give a friendly introduction to PH, navigate the pipeline for the computation of PH with an eye towards applications, and use a range of synthetic and real-world data sets to evaluate currently available open-source implementations for the computation of PH. Based on our benchmarking, we indicate which algorithms and implementations are best suited to different types of data sets. In an accompanying tutorial, we provide guidelines for the computation of PH. We make publicly available all scripts that we wrote for the tutorial, and we make available the processed version of the data sets used in the benchmarking.},
+  journal = {EPJ Data Science},
+  number = {1}
+}
+
+@article{pun_persistent-homology-based_2018,
+  title = {Persistent-{{Homology}}-Based {{Machine Learning}} and Its {{Applications}} -- {{A Survey}}},
+  author = {Pun, Chi Seng and Xia, Kelin and Lee, Si Xian},
+  year = {2018},
+  month = nov,
+  abstract = {A suitable feature representation that can both preserve the data intrinsic information and reduce data complexity and dimensionality is key to the performance of machine learning models. Deeply rooted in algebraic topology, persistent homology (PH) provides a delicate balance between data simplification and intrinsic structure characterization, and has been applied to various areas successfully. However, the combination of PH and machine learning has been hindered greatly by three challenges, namely topological representation of data, PH-based distance measurements or metrics, and PH-based feature representation. With the development of topological data analysis, progresses have been made on all these three problems, but widely scattered in different literatures. In this paper, we provide a systematical review of PH and PH-based supervised and unsupervised models from a computational perspective. Our emphasizes are the recent development of mathematical models and tools, including PH softwares and PH-based functions, feature representations, kernels, and similarity models. Essentially, this paper can work as a roadmap for the practical application of PH-based machine learning tools. Further, we consider different topological feature representations in different machine learning models, and investigate their impacts on the protein secondary structure classification.},
+  archivePrefix = {arXiv},
+  eprint = {1811.00252},
+  eprinttype = {arxiv},
+  journal = {arXiv:1811.00252 [math]},
+  keywords = {Mathematics - Algebraic Topology},
+  language = {en},
+  primaryClass = {math}
+}
+
+@article{rieck_topological_nodate,
+  title = {Topological {{Machine Learning}} with {{Persistence Indicator Functions}}},
+  author = {Rieck, Bastian and Sadlo, Filip and Leitte, Heike},
+  pages = {14},
+  abstract = {Techniques from computational topology, in particular persistent homology, are becoming increasingly relevant for data analysis. Their stable metrics permit the use of many distance-based data analysis methods, such as multidimensional scaling, while providing a firm theoretical ground. Many modern machine learning algorithms, however, are based on kernels. This paper presents persistence indicator functions (PIFs), which summarize persistence diagrams, i.e., feature descriptors in topological data analysis. PIFs can be calculated and compared in linear time and have many beneficial properties, such as the availability of a kernel-based similarity measure. We demonstrate their usage in common data analysis scenarios, such as confidence set estimation and classification of complex structured data.},
+  language = {en}
+}
+
+
