@@ -89,7 +89,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-Persistent homology has the ability to discern both the global topology \cite{}
+Persistent homology has the ability to discern both the global topology \cite{ghrist_barcodes:_2008}
 and local geometry \cite{} of finite metric spaces (e.g. embedded weighted
 graphs, point clouds in $\R^d$) making it a befitting feature for the purposes of
 training a neural network. Single-dimensional homological persistence has drawn
@@ -97,9 +97,25 @@ recent attention in deep learning \cite{hofer_deep_2017,pun_persistent-homology-
 of efficient software libraries \cite{otter_roadmap_2017,henselman_matroid_2017,bauer_ripser:_2019} for computing barcodes (in the
 ``west-coast'' lingo) of filtrations (e.g. Rips, alpha, {C}ech, sub-levelset).
 Barcodes provide a compact shape descriptor for metric space data that
-is stable with respect to Gromov-Hausdorff distance \cite{}. In a seminal paper
-\cite{carlsson_theory_2009}, Carlsson and Zomorodian show there is no such compact description for
-multi-parameter persistence.
+is stable with respect to Gromov-Hausdorff distance \cite{}. What's more, barcodes are encodable as features for performing various machine learning tasks (e.g.~classification). Competing recipes for featurizing barcodes from single dimensional persistence, including persistence images \cite{}, persistence landscapes \cite{}, and more exotic methods \cite{tropical}, are gaining momentum in machine learning and other scientific spheres.
+
+Multidimensional persistence generalizes single-dimensional persistent homology in order to tackle filtrations parameterized in multiple dimensions.
+Such filtrations arise, for example, in a Rips filtration of a finite metric space (i.e.~a Rips filtration) for which the finite metric space itself is parameterized by a signal attributing a vector in $\R^d$ to every point of the metric space. Restricting to points in the metric space appearing below a certain coordinate-wise threshold results in a mulit-filtration of the cooresponding Rips complexes.
+
+Multidimensional persistence boasts stability properties \cite{lesnick_theory_2015}, if computational intractable.
+While these properties are impressive, they avert a combinatorial description akin to the barcode.
+This is not by accident.
+In fact, no such compact description for
+multidimensional persistence is possible \cite{carlsson_theory_2009}.
+All hope is not lost. Families of integer-valued maps over the parameter space of a persistence module called \textit{invariants} have qualified ability to characterize multidimensional persistence.
+Invariants considered in this paper are include the \textit{Hilbert function}, indicating the rank of homology at a particular point in parameter space, and the \textit{multi-graded Betti numbers}, a family of discrete algebraic invariants arising from a construction in homological algebra; the Hilbert function is nothing more than parametrized (topological) Betti numbers\footnote{\textit{Caveat lector:} the
+multi-graded Betti numbers are not the same as the topological Betti numbers
+$\beta_i(\mathbb{X}) = \dim(H_i(\mathbb{X}))$.}, the muilti-graded Betti numbers have their own geometric interpretation \cite{Knudson2008}.
+The \textit{rank invariant}, another invariant, is shown to be complete in the case of single dimensional persistence \cite{carlsson_theory_2009}; due to it's difficulty to compute it is not considered here.
+
+Multidimensional persistence suffers several hindrances to its usefulness in machine learning. (i) Software for computing invariants for multidimensional persistence is scarce. To the authors' knowledge, RIVET is the only available software for computing multidimensional persistence \cite{lesnick_interactive_2015}; RIVET specializes to $2$-dimensional persistence and provides a user-interface for visualizing multi-filtrations as well as a pipline for computing the Hilbert function and the multi-graded Betti numbers in degrees $0$, $1$, and $2$. (ii) For all the attention multidimensional persistence has received, there has been no activity, as far as the authors are aware, studying generating features from multidimensional persistence modules.
+
+We hope to ignite an interest in filling both of these gaps. In this paper, we propose a naive featurization of multidimensional persistence modules based on the invariants aforementioned. We design an architecture for classifying these persistence modules. Our architecture employs a lattice-theoretic notion of convolution, thereby respecting the order relation of the parameters of the persistence module. We implement our model and compare the performance of our proposed lattice-convolutional architecture with a (simplified) standard convolutional architecture (e.g.~similar to ImageNET).
 
 \section{Backgound}
 Due to space constraints, we can offer only a brief overview of multiparameter
@@ -127,7 +143,7 @@ $I_{[a,b)}(r) = k$ for $a \leq r < b$ and zero otherwise. The maps are
 the identity where possible and the zero map otherwise.
 % is this the right shape for the intervals?
 
-This representation theoretic fact gives a representation\footnote{Heh.} of
+This representation theoretic fact gives a representation\footnote{Pun intended.} of
 $\R$-indexed persistence modules via \introduce{barcodes} or
 \introduce{persistence diagrams}. Each bar $I_{[a,b)}$ in the barcode represents
 a homology class which is \introduce{born} at $a$ and \introduce{dies} at $b$.
@@ -163,9 +179,7 @@ While there does not exist a discrete set of invariants for $M$, we can extract
 meaningful features. Two particularly informative types of features are 
  the \introduce{Hilbert function}
   \[\text{Hilb}: L \to \Z_+;\quad \mathbf{x} \mapsto \dim(M_\mathbf{x}),\] and
-the \introduce{multi-graded Betti numbers}\footnote{\textit{Caveat lector:} the
-multi-graded Betti numbers are not the same as the topological Betti numbers
-$\beta_i(\mathbb{X}) = \dim(H_i(\mathbb{X}))$.} $\xi_j: L \to \Z_+$, for $j =
+the \introduce{multi-graded Betti numbers} $\xi_j: L \to \Z_+$, for $j =
 0,1,2$. For $M = PH_i$ as above, the Hilbert function counts the number of
 connected components ($i=0$), cycles ($i=1$), or higher dimensional voids ($i >
 1$) of the complex $\mathbb{X}_{r,t}$ at each $(r,t) \in L$. The multi-graded
