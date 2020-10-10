@@ -1,4 +1,13 @@
 
+@article{adams_persistence_2017,
+  title = {Persistence {{Images}}: {{A Stable Vector Representation}} of {{Persistent Homology}}},
+  author = {Adams, Henry and Emerson, Tegan and Kirby, Michael and Neville, Rachel and Peterson, Chris and Shipman, Patrick and Chepushtanova, Sofya and Hanson, Eric and Motta, Francis and Ziegelmeier, Lori},
+  year = {2017},
+  volume = {18},
+  journal = {Journal of Machine Learning Research},
+  language = {en}
+}
+
 @article{bauer_ripser:_2019,
   title = {Ripser: Efficient Computation of {{Vietoris}}-{{Rips}} Persistence Barcodes},
   shorttitle = {Ripser},
@@ -14,6 +23,20 @@
   primaryClass = {cs, math}
 }
 
+@article{botnan_relative_2020,
+  title = {A Relative Theory of Interleavings},
+  author = {Botnan, Magnus Bakke and Curry, Justin and Munch, Elizabeth},
+  year = {2020},
+  month = apr,
+  abstract = {The interleaving distance, although originally developed for persistent homology, has been generalized to measure the distance between functors modeled on many posets or even small categories. Existing theories require that such a poset have a superlinear family of translations or a similar structure. However, many posets of interest to topological data analysis, such as zig-zag posets and the face relation poset of a cell-complex, do not admit interesting translations, and consequently don't admit a nice theory of interleavings. In this paper we show how one can side-step this limitation by providing a general theory where one maps to a poset that does admit interesting translations, such as the lattice of down sets, and then defines interleavings relative to this map. Part of our theory includes a rigorous notion of discretization or "pixelization" of poset modules, which in turn we use for interleaving inference. We provide an approximation condition that in the setting of lattices gives rise to two possible pixelizations, both of which are guaranteed to be close in the interleaving distance. Finally, we conclude by considering interleaving inference for cosheaves over a metric space and give an explicit description of interleavings over a grid structure on Euclidean space.},
+  archivePrefix = {arXiv},
+  eprint = {2004.14286},
+  eprinttype = {arxiv},
+  journal = {arXiv:2004.14286 [cs, math]},
+  keywords = {Computer Science - Computational Geometry,Mathematics - Algebraic Topology,Mathematics - Category Theory},
+  primaryClass = {cs, math}
+}
+
 @article{bruel-gabrielsson_topology_2020,
   title = {A {{Topology Layer}} for {{Machine Learning}}},
   author = {{Br{\"u}el-Gabrielsson}, Rickard and Nelson, Bradley J. and Dwaraknath, Anjan and Skraba, Primoz and Guibas, Leonidas J. and Carlsson, Gunnar},
@@ -26,6 +49,31 @@
   journal = {arXiv:1905.12200 [cs, math, stat]},
   keywords = {Computer Science - Machine Learning,Mathematics - Algebraic Topology,Statistics - Machine Learning},
   primaryClass = {cs, math, stat}
+}
+
+@article{bubenik_persistent_2020,
+  title = {Persistent Homology Detects Curvature},
+  author = {Bubenik, Peter and Hull, Michael and Patel, Dhruv and Whittle, Benjamin},
+  year = {2020},
+  month = jan,
+  volume = {36},
+  pages = {025008},
+  publisher = {{IOP Publishing}},
+  issn = {0266-5611},
+  abstract = {In topological data analysis, persistent homology is used to study the `shape of data'. Persistent homology computations are completely characterized by a set of intervals called a bar code. It is often said that the long intervals represent the `topological signal' and the short intervals represent `noise'. We give evidence to dispute this thesis, showing that the short intervals encode geometric information. Specifically, we prove that persistent homology detects the curvature of disks from which points have been sampled. We describe a general computational framework for solving inverse problems using the average persistence landscape, a continuous mapping from metric spaces with a probability measure to a Hilbert space. In the present application, the average persistence landscapes of points sampled from disks of constant curvature results in a path in this Hilbert space which may be learned using standard tools from statistical and machine learning.},
+  journal = {Inverse Problems},
+  language = {en},
+  number = {2}
+}
+
+@article{bubenik_statistical_2015,
+  title = {Statistical {{Topological Data Analysis}} Using {{Persistence Landscapes}}},
+  author = {Bubenik, Peter},
+  year = {2015},
+  volume = {16},
+  abstract = {We define a new topological summary for data that we call the persistence landscape. Since this summary lies in a vector space, it is easy to combine with tools from statistics and machine learning, in contrast to the standard topological summaries. Viewed as a random variable with values in a Banach space, this summary obeys a strong law of large numbers and a central limit theorem. We show how a number of standard statistical tests can be used for statistical inference using this summary. We also prove that this summary is stable and that it can be used to provide lower bounds for the bottleneck and Wasserstein distances.},
+  journal = {Journal of Machine Learning Research},
+  language = {en}
 }
 
 @article{carlsson_theory_2009,
@@ -61,7 +109,7 @@
 }
 
 @article{henselman_matroid_2017,
-  title = {Matroid {{Filtrations}} and {{Computational Persistent Homology}}},
+  title = {Matroid Filtrations and Computational Persistent Homology},
   author = {Henselman, Gregory and Ghrist, Robert},
   year = {2017},
   month = oct,
@@ -75,7 +123,7 @@
 }
 
 @incollection{hofer_deep_2017,
-  title = {Deep {{Learning}} with {{Topological Signatures}}},
+  title = {Deep Learning with Topological Signatures},
   booktitle = {Advances in {{Neural Information Processing Systems}} 30},
   author = {Hofer, Christoph and Kwitt, Roland and Niethammer, Marc and Uhl, Andreas},
   editor = {Guyon, I. and Luxburg, U. V. and Bengio, S. and Wallach, H. and Fergus, R. and Vishwanathan, S. and Garnett, R.},
@@ -85,15 +133,42 @@
 }
 
 @article{hofer_learning_nodate,
-  title = {Learning {{Representations}} of {{Persistence Barcodes}}},
+  title = {Learning Representations of Persistence Barcodes},
   author = {Hofer, Christoph D and Kwitt, Roland and Niethammer, Marc},
   pages = {45},
   abstract = {We consider the problem of supervised learning with summary representations of topological features in data. In particular, we focus on persistent homology, the prevalent tool used in topological data analysis. As the summary representations, referred to as barcodes or persistence diagrams, come in the unusual format of multi sets, equipped with computationally expensive metrics, they can not readily be processed with conventional learning techniques. While different approaches to address this problem have been proposed, either in the context of kernel-based learning, or via carefully designed vectorization techniques, it remains an open problem how to leverage advances in representation learning via deep neural networks. Appropriately handling topological summaries as input to neural networks would address the disadvantage of previous strategies which handle this type of data in a task-agnostic manner. In particular, we propose an approach that is designed to learn a task-specific representation of barcodes. In other words, we aim to learn a representation that adapts to the learning problem while, at the same time, preserving theoretical properties (such as stability). This is done by projecting barcodes into a finite dimensional vector space using a collection of parametrized functionals, so called structure elements, for which we provide a generic construction scheme. A theoretical analysis of this approach reveals sufficient conditions to preserve stability, and also shows that different choices of structure elements lead to great differences with respect to their suitability for numerical optimization. When implemented as a neural network input layer, our approach demonstrates compelling performance on various types of problems, including graph classification and eigenvalue prediction, the classification of 2D/3D object shapes and recognizing activities from EEG signals.},
   language = {en}
 }
 
+@article{kalisnik_tropical_2019,
+  title = {Tropical {{Coordinates}} on the {{Space}} of {{Persistence Barcodes}}},
+  author = {Kali{\v s}nik, Sara},
+  year = {2019},
+  month = feb,
+  volume = {19},
+  pages = {101--129},
+  issn = {1615-3383},
+  abstract = {The aim of applied topology is to use and develop topological methods for applied mathematics, science and engineering. One of the main tools is persistent homology, an adaptation of classical homology, which assigns a barcode, i.e., a collection of intervals, to a finite metric space. Because of the nature of the invariant, barcodes are not well adapted for use by practitioners in machine learning tasks. We can circumvent this problem by assigning numerical quantities to barcodes, and these outputs can then be used as input to standard algorithms. It is the purpose of this paper to identify tropical coordinates on the space of barcodes and prove that they are stable with respect to the bottleneck distance and Wasserstein distances.},
+  journal = {Foundations of Computational Mathematics},
+  language = {en},
+  number = {1}
+}
+
+@article{knudson_refinement_2008,
+  title = {A Refinement of Multi-Dimensional Persistence},
+  author = {Knudson, Kevin P.},
+  year = {2008},
+  volume = {10},
+  pages = {259--281},
+  issn = {15320073, 15320081},
+  abstract = {We study the multi-dimensional persistence of Carlsson and Zomorodian and obtain a finer classification based upon the higher tor-modules of a persistence module. We propose a variety structure on the set of isomorphism classes of these modules, and present several examples. We also provide a geometric interpretation for the higher tor-modules of homology modules of multi-filtered simplicial complexes.},
+  journal = {Homology, Homotopy and Applications},
+  language = {en},
+  number = {1}
+}
+
 @article{lesnick_interactive_2015,
-  title = {Interactive {{Visualization}} of 2-{{D Persistence Modules}}},
+  title = {Interactive Visualization of 2-d Persistence Modules},
   author = {Lesnick, Michael and Wright, Matthew},
   year = {2015},
   month = dec,
@@ -121,7 +196,7 @@
 }
 
 @article{liu_applying_2016,
-  title = {Applying {{Topological Persistence}} in {{Convolutional Neural Network}} for {{Music Audio Signals}}},
+  title = {Applying Topological Persistence in Convolutional Neural Network for Music Audio Signals},
   author = {Liu, Jen-Yu and Jeng, Shyh-Kang and Yang, Yi-Hsuan},
   year = {2016},
   month = aug,
@@ -132,6 +207,21 @@
   journal = {arXiv:1608.07373 [cs]},
   keywords = {Computer Science - Computational Geometry,Computer Science - Multimedia,Computer Science - Neural and Evolutionary Computing,Computer Science - Sound},
   primaryClass = {cs}
+}
+
+@article{ortega_graph_2018,
+  title = {Graph Signal Processing: Overview, Challenges, and Applications},
+  shorttitle = {Graph Signal Processing},
+  author = {Ortega, A. and Frossard, P. and Kova{\v c}evi{\'c}, J. and Moura, J. M. F. and Vandergheynst, P.},
+  year = {2018},
+  month = may,
+  volume = {106},
+  pages = {808--828},
+  issn = {0018-9219},
+  abstract = {Research in graph signal processing (GSP) aims to develop tools for processing data defined on irregular graph domains. In this paper, we first provide an overview of core ideas in GSP and their connection to conventional digital signal processing, along with a brief historical perspective to highlight how concepts recently developed in GSP build on top of prior research in other areas. We then summarize recent advances in developing basic GSP tools, including methods for sampling, filtering, or graph learning. Next, we review progress in several application areas using GSP, including processing and analysis of sensor network data, biological data, and applications to image processing and machine learning.},
+  journal = {Proceedings of the IEEE},
+  keywords = {application areas,basic GSP tools,biological data,conventional digital signal processing,Data models,graph learning,graph signal processing,Graph signal processing (GSP),graph theory,Graph theory,Graphical models,image processing,irregular graph domains,Laplace equations,learning (artificial intelligence),machine learning,Machine learning,network science and graphs,prior research,sampling,Sampling methods,sensor network data,signal processing,Signal processing,Social network services},
+  number = {5}
 }
 
 @article{otter_roadmap_2017,
@@ -145,6 +235,14 @@
   abstract = {Persistent homology (PH) is a method used in topological data analysis (TDA) to study qualitative features of data that persist across multiple scales. It is robust to perturbations of input data, independent of dimensions and coordinates, and provides a compact representation of the qualitative features of the input. The computation of PH is an open area with numerous important and fascinating challenges. The field of PH computation is evolving rapidly, and new algorithms and software implementations are being updated and released at a rapid pace. The purposes of our article are to (1) introduce theory and computational methods for PH to a broad range of computational scientists and (2) provide benchmarks of state-of-the-art implementations for the computation of PH. We give a friendly introduction to PH, navigate the pipeline for the computation of PH with an eye towards applications, and use a range of synthetic and real-world data sets to evaluate currently available open-source implementations for the computation of PH. Based on our benchmarking, we indicate which algorithms and implementations are best suited to different types of data sets. In an accompanying tutorial, we provide guidelines for the computation of PH. We make publicly available all scripts that we wrote for the tutorial, and we make available the processed version of the data sets used in the benchmarking.},
   journal = {EPJ Data Science},
   number = {1}
+}
+
+@article{pueschel_discrete_2019,
+  title = {A Discrete Signal Processing Framework for Meet/Join Lattices with Applications to Hypergraphs and Trees},
+  author = {Pueschel, Markus},
+  year = {2019},
+  month = may,
+  language = {en}
 }
 
 @article{pun_persistent-homology-based_2018,
@@ -162,42 +260,65 @@
   primaryClass = {math}
 }
 
+@article{puschel_algebraic_2008,
+  title = {Algebraic {{Signal Processing Theory}}: {{Foundation}} and 1-{{D Time}}},
+  shorttitle = {Algebraic {{Signal Processing Theory}}},
+  author = {Puschel, Markus and Moura, Jos{\'E} M. F.},
+  year = {2008},
+  month = aug,
+  volume = {56},
+  pages = {3572--3585},
+  issn = {1941-0476},
+  abstract = {This paper introduces a general and axiomatic approach to linear signal processing (SP) that we refer to as the algebraic signal processing theory (ASP). Basic to ASP is the linear signal model defined as a triple (A,M,Phi) where familiar concepts like the filter space and the signal space are cast as an algebra A and a module M, respectively. The mapping Phi generalizes the concept of a z-transform to bijective linear mappings from a vector space of signal samples into the module M. Common concepts like filtering, spectrum, or Fourier transform have their equivalent counterparts in ASP. Once these concepts and their properties are defined and understood in the context of ASP, they remain true and apply to specific instantiations of the ASP signal model. For example, to develop signal processing theories for infinite and finite discrete time signals, for infinite or finite discrete space signals, or for multidimensional signals, we need only to instantiate the signal model to one that makes sense for that specific class of signals. Filtering, spectrum, Fourier transform, and other notions follow then from the corresponding ASP concepts. Similarly, common assumptions in SP translate into requirements on the ASP signal model. For example, shift-invariance is equivalent to A being commutative. For finite (duration) signals shift invariance then restricts A to polynomial algebras. We explain how to design signal models from the specification of a special filter, the shift. The paper illustrates the general ASP theory with the standard time shift, presenting a unique signal model for infinite time and several signal models for finite time. The latter models illustrate the role played by boundary conditions and recover the discrete Fourier transform (DFT) and its variants as associated Fourier transforms. Finally, ASP provides a systematic methodology to derive fast algorithms for linear transforms. This topic and the application of ASP to space dependent signals and to multidimensional signals are pursued in companion papers.},
+  journal = {IEEE Transactions on Signal Processing},
+  keywords = {$z$ -transform,algebra,Algebra,algebraic signal processing theory,Application specific processors,bijective linear mappings,boundary condition,boundary conditions,convolution,discrete Fourier transform,discrete Fourier transforms,Discrete Fourier transforms,discrete space signals,discrete time signals,filter,filter space,Filtering,filtering theory,Fourier transform,Fourier transforms,irreducible,linear signal processing,module,Multidimensional signal processing,multidimensional signals,Nonlinear filters,polynomial algebras,polynomial transform,representation theory,shift,shift-invariance,shift-invariant,signal extension,Signal mapping,signal model,Signal model,signal processing,Signal processing,signal space,special filter,spectrum,vector space,vectors,Vectors,Z transforms,z-transform},
+  number = {8}
+}
+
+@inproceedings{puschel_discrete_2018,
+  title = {A {{Discrete Signal Processing Framework}} for {{Set Functions}}},
+  booktitle = {2018 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Puschel, Markus},
+  year = {2018},
+  month = apr,
+  pages = {4359--4363},
+  publisher = {{IEEE}},
+  address = {{Calgary, AB}},
+  abstract = {A set function associates a real (or complex) value with every subset of a given finite set S. In this paper, we derive a novel discrete signal processing (DSP) framework for such functions. This means we define and derive suitable notions of basic DSP concepts including shift, filtering, frequency response, Fourier transform, and convolution theorems. At the heart is the definition of the shift on subsets for which we consider the two most natural choices, i.e., those most analogous to the time shift in standard DSP. Set functions naturally occur in many contexts associated with probability distributions, graph cuts, sensor placements, mutual information, entropy of sets of random variables, and others. Our work offers a new set of tools for their processing.},
+  isbn = {978-1-5386-4658-8},
+  language = {en}
+}
+
 @article{rieck_topological_nodate,
-  title = {Topological {{Machine Learning}} with {{Persistence Indicator Functions}}},
+  title = {Topological Machine Learning with Persistence Indicator Functions},
   author = {Rieck, Bastian and Sadlo, Filip and Leitte, Heike},
   pages = {14},
   abstract = {Techniques from computational topology, in particular persistent homology, are becoming increasingly relevant for data analysis. Their stable metrics permit the use of many distance-based data analysis methods, such as multidimensional scaling, while providing a firm theoretical ground. Many modern machine learning algorithms, however, are based on kernels. This paper presents persistence indicator functions (PIFs), which summarize persistence diagrams, i.e., feature descriptors in topological data analysis. PIFs can be calculated and compared in linear time and have many beneficial properties, such as the availability of a kernel-based similarity measure. We demonstrate their usage in common data analysis scenarios, such as confidence set estimation and classification of complex structured data.},
   language = {en}
 }
 
-@techreport{Bubenik2015,
-abstract = {We define a new topological summary for data that we call the persistence landscape. Since this summary lies in a vector space, it is easy to combine with tools from statistics and machine learning, in contrast to the standard topological summaries. Viewed as a random variable with values in a Banach space, this summary obeys a strong law of large numbers and a central limit theorem. We show how a number of standard statistical tests can be used for statistical inference using this summary. We also prove that this summary is stable and that it can be used to provide lower bounds for the bottleneck and Wasserstein distances.},
-author = {Bubenik, Peter},
-booktitle = {Journal of Machine Learning Research},
-file = {:C$\backslash$:/Users/hansr/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Bubenik{\_}2015{\_}Journal of Machine Learning Research.pdf:pdf},
-keywords = {persistence landscape,persistent homology,statistical topology,topolog-ical summary,topological data analysis},
-pages = {77--102},
-title = {{Statistical Topological Data Analysis using Persistence Landscapes}},
-volume = {16},
-year = {2015}
+@incollection{wendler_powerset_2019,
+  title = {Powerset {{Convolutional Neural Networks}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}} 32},
+  author = {Wendler, Chris and P{\"u}schel, Markus and Alistarh, Dan},
+  editor = {Wallach, H. and Larochelle, H. and Beygelzimer, A. and d{\textbackslash}textquotesingle {Alch{\'e}-Buc}, F. and Fox, E. and Garnett, R.},
+  year = {2019},
+  pages = {929--940},
+  publisher = {{Curran Associates, Inc.}}
 }
 
-@article{Knudson2008,
-abstract = {We study the multi-dimensional persistence of Carlsson and Zomorodian and obtain a finer classification based upon the higher tor-modules of a persistence module. We propose a variety structure on the set of isomorphism classes of these modules, and present several examples. We also provide a geometric interpretation for the higher tor-modules of homology modules of multi-filtered simplicial complexes. Copyright {\textcopyright} 2008, International Press.},
-archivePrefix = {arXiv},
-arxivId = {0706.2608},
-author = {Knudson, Kevin P.},
-doi = {10.4310/HHA.2008.v10.n1.a11},
-eprint = {0706.2608},
-file = {:C$\backslash$:/Users/hansr/OneDrive/Documents/Research/refinement-multid-persistence.pdf:pdf},
-issn = {15320081},
-journal = {Homology, Homotopy and Applications},
-keywords = {Hypertor group,Persistent homology,Tor group,multidimensional persistence},
-mendeley-tags = {multidimensional persistence},
-number = {1},
-pages = {259--281},
-title = {{A refinement of multi-dimensional persistence}},
-volume = {10},
-year = {2008}
+@inproceedings{zhirong_wu_3d_2015,
+  title = {{{3D ShapeNets}}: {{A}} Deep Representation for Volumetric Shapes},
+  shorttitle = {{{3D ShapeNets}}},
+  booktitle = {2015 {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}} ({{CVPR}})},
+  author = {{Zhirong Wu} and Song, Shuran and Khosla, Aditya and {Fisher Yu} and {Linguang Zhang} and {Xiaoou Tang} and Xiao, Jianxiong},
+  year = {2015},
+  month = jun,
+  pages = {1912--1920},
+  publisher = {{IEEE}},
+  address = {{Boston, MA, USA}},
+  isbn = {978-1-4673-6964-0},
+  language = {en}
 }
+
 
