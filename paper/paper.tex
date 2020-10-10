@@ -33,7 +33,7 @@
 
 %HANS's CONVENIENCES
 \usepackage{mymacros}
-
+\usepackage{graphicx}
 
 \title{Multidimensional Persistence Module Classification via Lattice-Theoretic Convolutions}
 
@@ -168,7 +168,7 @@ Due to space constraints, we can offer only a brief overview of multiparameter
 persistent homology. For a primer on persistent homology,
 see~\cite{ghrist_barcodes:_2008, carlsson_topology_2009}; for multiparameter
 persistent homology, see~\cite{lesnick_interactive_2015}. An introduction to
-lattices may be found in~\cite{}.
+lattices may be found in~\cite{davey2002introduction}.
 
 \subsection{Rips complexes and persistent homology}
 Let $(\mathcal M,d)$ be a finite metric space. The \introduce{Vietoris-Rips
@@ -202,7 +202,7 @@ functor over a pair of coherent filtrations. Consider
 a finite metric space $(\mathcal M, d)$ and a filtration
 function $\rho:\mathcal M \to \R$. This data specifies a bifiltration of
 simplicial complexes given by
-\[\mathbb{X}_{r,t} = \text{Rips}_r{x \in \mathcal M \mid \rho(x) \leq t}.\]
+\[\mathbb{X}_{r,t} = \text{Rips}_r\{x \in \mathcal M \mid \rho(x) \leq t\}.\]
 There is a natural inclusion $\mathbb{X}_{r,t} \hookrightarrow
 \mathbb{X}_{r',t'}$ whenever $(r,t) \leq (r',t')$ in the lattice $\R \times R$.
 Composing with the homology functor produces a 2-parameter persistence module
@@ -298,7 +298,7 @@ $f : [m] \times [n] \to \R^{N_{\text{in}}}$ and outputs an
 $N_{\text{out}}$-dimensional signal $ [m] \times [n] \to
 \R^{N_{\text{out}}}$. The layer's parameters are given by a function $g: [m]
 \times [n] \to \R^{N_{\text{out}}\times N_{\text{in}}}$. If we label the
-entries of $f(x,y)$ by $f_i$ and the entries of $g(x,y)$ by $g^i_j$ The layer then acts by
+entries of $f(x,y)$ by $f_i$ and the entries of $g(x,y)$ by $g^i_j$, the layer then acts by
 \[\text{MeetConv}(f)(x,y)^j = \sum_{i} (f_i \ast_{\wedge} g^i_j)(x,y) = \sum_i
   \sum_{(a,b) \in [m]\times [n]} f_i(x \wedge a, y \wedge b)g^i_j(a,b)\]
 in the case of convolution with respect to the meet operation, and
@@ -320,9 +320,15 @@ should have support near the minimum $(0,0)$.
 
 
 \section{Experiments}
-\begin{figure}
+\begin{figure}[b]
   \caption{Comparison training curves for the lattice neural network and
     standard convolutional neural network.}\label{fig:comparison}
+    \begin{center}
+    \includegraphics[width=0.49\textwidth]{lattice_accuracy.png}
+    \vspace{0.2cm}
+    \includegraphics[width=0.49\textwidth]{conv_accuracy.png}
+    \end{center}
+    
 \end{figure}
 
 We use a small portion of the Princeton ModelNet
@@ -369,7 +375,8 @@ shown in Figure~\ref{fig:comparison}.
 
 The lattice-based convolution and classical convolution networks perform
 similarly on the training set. However, the lattice convolution network's
-predictions generalize more accurately to the testing set.
+predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
+This improvement is  at the expense of noisy training as well as dramatically increased training time.  
 %% more discussion of what the data actually looks like
 
 \section{Discussion}
