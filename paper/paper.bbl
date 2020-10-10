@@ -1,0 +1,127 @@
+\begin{thebibliography}{10}
+
+\bibitem{adams_persistence_2017}
+Henry Adams, Tegan Emerson, Michael Kirby, Rachel Neville, Chris Peterson,
+  Patrick Shipman, Sofya Chepushtanova, Eric Hanson, Francis Motta, and Lori
+  Ziegelmeier.
+\newblock Persistence {{Images}}: {{A Stable Vector Representation}} of
+  {{Persistent Homology}}.
+\newblock {\em Journal of Machine Learning Research}, 18, 2017.
+
+\bibitem{bauer_ripser:_2019}
+Ulrich Bauer.
+\newblock Ripser: Efficient computation of {{Vietoris}}-{{Rips}} persistence
+  barcodes.
+\newblock {\em arXiv:1908.02518 [cs, math]}, August 2019.
+
+\bibitem{bruel-gabrielsson_topology_2020}
+Rickard {Br{\"u}el-Gabrielsson}, Bradley~J. Nelson, Anjan Dwaraknath, Primoz
+  Skraba, Leonidas~J. Guibas, and Gunnar Carlsson.
+\newblock A {{Topology Layer}} for {{Machine Learning}}.
+\newblock {\em arXiv:1905.12200 [cs, math, stat]}, April 2020.
+
+\bibitem{bubenik_statistical_2015}
+Peter Bubenik.
+\newblock Statistical {{Topological Data Analysis}} using {{Persistence
+  Landscapes}}.
+\newblock {\em Journal of Machine Learning Research}, 16, 2015.
+
+\bibitem{bubenik_persistent_2020}
+Peter Bubenik, Michael Hull, Dhruv Patel, and Benjamin Whittle.
+\newblock Persistent homology detects curvature.
+\newblock {\em Inverse Problems}, 36(2):025008, January 2020.
+
+\bibitem{carlsson_topology_2009}
+Gunnar Carlsson.
+\newblock Topology and data.
+\newblock {\em Bulletin of the American Mathematical Society}, 46:255--308,
+  2009.
+
+\bibitem{carlsson_theory_2009}
+Gunnar Carlsson and Afra Zomorodian.
+\newblock The {{Theory}} of {{Multidimensional Persistence}}.
+\newblock {\em Discrete \& Computational Geometry}, 42(1):71--93, July 2009.
+
+\bibitem{ghrist_barcodes:_2008}
+Robert Ghrist.
+\newblock Barcodes: The persistent topology of data.
+\newblock {\em Bulletin of the American Mathematical Society}, 45:61--75, 2008.
+
+\bibitem{henselman_matroid_2017}
+Gregory Henselman and Robert Ghrist.
+\newblock Matroid filtrations and computational persistent homology.
+\newblock {\em arXiv:1606.00199 [math]}, October 2017.
+
+\bibitem{hofer_deep_2017}
+Christoph Hofer, Roland Kwitt, Marc Niethammer, and Andreas Uhl.
+\newblock Deep learning with topological signatures.
+\newblock In I.~Guyon, U.~V. Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
+  S.~Vishwanathan, and R.~Garnett, editors, {\em Advances in {{Neural
+  Information Processing Systems}} 30}, pages 1634--1644. {Curran Associates,
+  Inc.}, 2017.
+
+\bibitem{kalisnik_tropical_2019}
+Sara Kali{\v s}nik.
+\newblock Tropical {{Coordinates}} on the {{Space}} of {{Persistence
+  Barcodes}}.
+\newblock {\em Foundations of Computational Mathematics}, 19(1):101--129,
+  February 2019.
+
+\bibitem{knudson_refinement_2008}
+Kevin~P. Knudson.
+\newblock A refinement of multi-dimensional persistence.
+\newblock {\em Homology, Homotopy and Applications}, 10(1):259--281, 2008.
+
+\bibitem{lesnick_interactive_2015}
+Michael Lesnick and Matthew Wright.
+\newblock Interactive visualization of 2-d persistence modules.
+\newblock {\em arXiv:1512.00180 [cs, math]}, December 2015.
+
+\bibitem{ortega_graph_2018}
+A.~Ortega, P.~Frossard, J.~Kova{\v c}evi{\'c}, J.~M.~F. Moura, and
+  P.~Vandergheynst.
+\newblock Graph signal processing: Overview, challenges, and applications.
+\newblock {\em Proceedings of the IEEE}, 106(5):808--828, May 2018.
+
+\bibitem{otter_roadmap_2017}
+Nina Otter, Mason~A. Porter, Ulrike Tillmann, Peter Grindrod, and Heather~A.
+  Harrington.
+\newblock A roadmap for the computation of persistent homology.
+\newblock {\em EPJ Data Science}, 6(1):17, August 2017.
+
+\bibitem{pueschel_discrete_2019}
+Markus Pueschel.
+\newblock A discrete signal processing framework for meet/join lattices with
+  applications to hypergraphs and trees.
+\newblock May 2019.
+
+\bibitem{pun_persistent-homology-based_2018}
+Chi~Seng Pun, Kelin Xia, and Si~Xian Lee.
+\newblock Persistent-{{Homology}}-based {{Machine Learning}} and its
+  {{Applications}} -- {{A Survey}}.
+\newblock {\em arXiv:1811.00252 [math]}, November 2018.
+
+\bibitem{puschel_algebraic_2008}
+Markus Puschel and Jos{\'E} M.~F. Moura.
+\newblock Algebraic {{Signal Processing Theory}}: {{Foundation}} and 1-{{D
+  Time}}.
+\newblock {\em IEEE Transactions on Signal Processing}, 56(8):3572--3585,
+  August 2008.
+
+\bibitem{wendler_powerset_2019}
+Chris Wendler, Markus P{\"u}schel, and Dan Alistarh.
+\newblock Powerset {{Convolutional Neural Networks}}.
+\newblock In H.~Wallach, H.~Larochelle, A.~Beygelzimer,
+  F.~d{\textbackslash}textquotesingle {Alch{\'e}-Buc}, E.~Fox, and R.~Garnett,
+  editors, {\em Advances in {{Neural Information Processing Systems}} 32},
+  pages 929--940. {Curran Associates, Inc.}, 2019.
+
+\bibitem{zhirong_wu_3d_2015}
+{Zhirong Wu}, Shuran Song, Aditya Khosla, {Fisher Yu}, {Linguang Zhang},
+  {Xiaoou Tang}, and Jianxiong Xiao.
+\newblock {{3D ShapeNets}}: {{A}} deep representation for volumetric shapes.
+\newblock In {\em 2015 {{IEEE Conference}} on {{Computer Vision}} and {{Pattern
+  Recognition}} ({{CVPR}})}, pages 1912--1920, {Boston, MA, USA}, June 2015.
+  {IEEE}.
+
+\end{thebibliography}
