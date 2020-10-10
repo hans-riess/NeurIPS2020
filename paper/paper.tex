@@ -48,7 +48,7 @@
 \author{%
   Hans Riess  \\
   Department of Electrical and Systems Engineering \\
-  Universiyt of Pennsylvania\\
+  University of Pennsylvania\\
   Philadelphia, PA 19104 \\
   \texttt{hmr@seas.upenn.edu} \\
   % examples of more authors
@@ -82,13 +82,14 @@
 \maketitle
 
 \begin{abstract}
+ Multiparameter persistent homology has been largely neglected as an input to
+ machine learning algorithms.
  We consider the use of lattice-based convolutional neural network layers as a 
  tool for the analysis of features arising from multiparameter persistence
- modules. \textbf{CHANGE THIS: something something the conclusion about what to do}
+ modules. We find that these show promise as an alternative to convolutions for
+ the classification of multidimensional persistence modules.
 \end{abstract}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
 Persistent homology has the ability to discern both the global
@@ -150,7 +151,7 @@ visualization rather than machine-interpretable output.
 Second, %for all the attention multidimensional persistence has received,
 there has been no activity, as far as the authors are aware, studying the extraction
 of suitable features for multidimensional persistent homology.
-
+%Carlsson has a little bit in a recent paper...
 
 We hope to ignite an interest in filling both of these gaps. In this paper, we
 propose a naive featurization of multidimensional persistence modules based on
@@ -166,8 +167,8 @@ convolutional architecture.
 Due to space constraints, we can offer only a brief overview of multiparameter
 persistent homology. For a primer on persistent homology,
 see~\cite{ghrist_barcodes:_2008, carlsson_topology_2009}; for multiparameter
-persistent homology, see~\cite{}. An introduction to lattices may be found
-in~\cite{}.
+persistent homology, see~\cite{lesnick_interactive_2015}. An introduction to
+lattices may be found in~\cite{}.
 
 \subsection{Rips complexes and persistent homology}
 Let $(\mathcal M,d)$ be a finite metric space. The \introduce{Vietoris-Rips
@@ -264,7 +265,6 @@ of course, the indexing sets for persistent homology, suggesting that lattice
 convolutions over $\R^n$ or its finite sublattices may be useful in analyzing
 data coming from multiparameter persistence computations. 
 
-
 \section{Lattice Convolutional Neural Networks}\label{sec:latticeCNN}
 
 Convolutions over $\R^2$ (with its abelian group structure)
@@ -287,7 +287,7 @@ modules. To the authors' knowledge, such an architecture has not previously been
 described, although a special case (where the underlying lattice is a power set)
 has been implemented in~\cite{wendler_powerset_2019}. We specialize the convolutions described in
 Section~\ref{sec:latticeconv} to the particular case of regular finite
-sublattices of $\R^2$. These may be represented (up to isomorphism)as $L = [m]
+sublattices of $\R^2$. These may be represented (up to isomorphism) as $L = [m]
 \times [n]$, where $[n]$ is the ordered set $\{0,1,\dots,n\}$. The meet and join operations are easily computed
 elementwise:
 \[(r,t) \wedge (r',t') = (\min(r,r'),\min(t,t'));\quad (r,t)\vee (r',t') =
@@ -320,6 +320,11 @@ should have support near the minimum $(0,0)$.
 
 
 \section{Experiments}
+\begin{figure}
+  \caption{Comparison training curves for the lattice neural network and
+    standard convolutional neural network.}\label{fig:comparison}
+\end{figure}
+
 We use a small portion of the Princeton ModelNet
 dataset~\cite{zhirong_wu_3d_2015} as a source of finite
 metric spaces. This dataset consists of hundreds of 3-dimensional CAD models
@@ -335,7 +340,7 @@ whose persistent homology we calculate using
 RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40 \times
 40$ points, producing lattice-indexed signals given by the Hilbert function and
 the multi-graded Betti numbers. These are then passed to the classifier, which
-produces a class prediction.
+produces a class prediction, in this case either ``sofa'' or ``monitor.''
 
 As the filter function on these data sets, we use
 \[\rho_{\text{codense}}(x;k) = \frac{k \diam(\mathcal M)}{\sum_{y \in N_k(x)}
@@ -354,13 +359,33 @@ We compare the performance of two convolutional networks on this classification
 task. One uses the lattice-convolution based layers described in
 Section~\ref{sec:latticeCNN}, and the other uses standard convolutional layers.
 Each has three convolutional layers followed by three fully connected layers.
+The lattice-based convolution layers are of the form $\text{MeetConv}(x) +
+\text{JoinConv}(x)$. All convolution kernels have dimension $4 \times 4$, hidden
+convolution layers have 16 features, and the final convolution has 8 features.
+The fully connected layers have 32 features at each inner layer.
+The networks are trained using the Adam gradient algorithm with learning rate
+$0.001$ for 50 epochs. We reserve 10\% of the data for testing. Results are
+shown in Figure~\ref{fig:comparison}.
 
-
-
+The lattice-based convolution and classical convolution networks perform
+similarly on the training set. However, the lattice convolution network's
+predictions generalize more accurately to the testing set.
+%% more discussion of what the data actually looks like
 
 \section{Discussion}
-Discuss.
+Our proposed featurization for persistence modules is rather naive, but well
+adapted to the use of lattice convolutions as a data processing method. The
+lattice convolutional neural network shows promise as a method for classifying
+features arising from a multiparameter persistence module. The algebraic
+perspective on partially ordered sets, exemplified by lattices, may also offer
+approaches to featurizing more complex invariants of persistence modules. In
+particular, the incidence algebra may offer a natural way to represent the rank
+invariant~\cite{carlsson_theory_2009} in a way amenable to convolution-like
+operations.
 
+We hope with these brief experiments to inspire further work on featurizing
+multidimensional persistence for use in machine learning algorithms.
+% anything else?
 
 \bibliographystyle{plain}
 \bibliography{latticenn}
