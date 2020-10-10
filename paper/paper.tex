@@ -132,7 +132,7 @@ The Hilbert function is nothing more than the pointwise
 (topological) Betti numbers\footnote{\textit{Caveat lector:} the multi-graded
 Betti numbers are not the same as the topological Betti numbers
 $\beta_i(\mathbb{X}) = \dim(H_i(\mathbb{X}))$.}, and the multi-graded Betti
-numbers have an interpretation in terms of births and deaths~\cite{knudson_refinement_2008}.
+numbers have a geometric interpretation in terms of births and deaths~\cite{knudson_refinement_2008}.
 
 % The \textit{rank
 % invariant}, another invariant, is shown to be complete in the case of single
@@ -328,22 +328,22 @@ should have support near the minimum $(0,0)$.
 We use a small portion of the Princeton ModelNet
 dataset~\cite{zhirong_wu_3d_2015} as a source of finite
 metric spaces. This dataset consists of hundreds of 3-dimensional CAD models
-representing objects from 40 classes. We select two of the classes and sample
+representing objects from 10 classes. We select two of the classes and sample
 points from the 3D models to produce finite metric spaces embedded in $\R^3$.
 We then compute the corresponding multidimensional persistence modules, from
 which we produce features used as an input to a convolutional neural net
 classifier.
 
-The pipline thus begins with a 3D model, which is sampled to produce a point
+The pipline thus begins with a 3D polyhedral model, of which $3000$ vertices are sampled to produce a point
 cloud in $\R^3$. This point cloud then produces a bifiltered simplicial complex,
 whose persistent homology we calculate using
 RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40 \times
 40$ points, producing lattice-indexed signals given by the Hilbert function and
-the multi-graded Betti numbers. These are then passed to the classifier, which
+the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$--four features in total. These are then passed to the classifier, which
 produces a class prediction, in this case either ``sofa'' or ``monitor.''
 
 As the filter function on these data sets, we use
-\[\rho_{\text{codense}}(x;k) = \frac{k \diam(\mathcal M)}{\sum_{y \in N_k(x)}
+\[\rho_{\text{codense}}(x;k) = \frac{1}{\frac{1}{k} \sum_{y \in N_k(x)}
     d(x,y)},\]
 where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$. This is the
 \introduce{codensity} filtration, so named because the points in the densest
