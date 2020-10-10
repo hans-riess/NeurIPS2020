@@ -164,11 +164,10 @@ convolutional architecture.
 
 \section{Backgound}
 
-Due to space constraints, we can offer only a brief overview of multiparameter
-persistent homology. For a primer on persistent homology,
-see~\cite{ghrist_barcodes:_2008, carlsson_topology_2009}; for multiparameter
-persistent homology, see~\cite{lesnick_interactive_2015}. An introduction to
-lattices may be found in~\cite{davey2002introduction}.
+Space constraints require that this section be laconic. For a primer on
+persistent homology, see~\cite{ghrist_barcodes:_2008, carlsson_topology_2009};
+for multiparameter persistent homology, see~\cite{lesnick_interactive_2015}. An
+introduction to lattices may be found in~\cite{davey2002introduction}.
 
 \subsection{Rips complexes and persistent homology}
 Let $(\mathcal M,d)$ be a finite metric space. The \introduce{Vietoris-Rips
@@ -190,10 +189,10 @@ $I_{[a,b)}(r) = k$ for $a \leq r < b$ and zero otherwise. The maps are the
 identity where possible and the zero map otherwise.
 % is this the right shape for the intervals?
 
-This representation theoretic fact gives a representation\footnote{Pun intended.} of
-$\R$-indexed persistence modules via \introduce{barcodes} or
-\introduce{persistence diagrams}. Each bar $I_{[a,b)}$ in the barcode represents
-a homology class which is \introduce{born} at $a$ and \introduce{dies} at $b$.
+% This representation theoretic fact gives a representation\footnote{Pun intended.} of
+% $\R$-indexed persistence modules via \introduce{barcodes} or
+% \introduce{persistence diagrams}. Each bar $I_{[a,b)}$ in the barcode represents
+% a homology class which is \introduce{born} at $a$ and \introduce{dies} at $b$.
 
 \subsection{Multiparameter persistence}
 The Rips construction produces a filtration of simplicial complexes from a
@@ -232,8 +231,8 @@ the \introduce{multi-graded Betti numbers} $\xi_j: L \to \Z_+$, for $j =
 0,1,2$. For $M = PH_i$ as above, the Hilbert function counts the number of
 connected components ($i=0$), cycles ($i=1$), or higher dimensional voids ($i >
 1$) of the complex $\mathbb{X}_{r,t}$ at each $(r,t) \in R_+\times \R$. The multi-graded
-Betti numbers, on the other hand, capture information about locations of births
-and deaths of persistence classes.
+Betti numbers, on the other hand, capture information about births
+and deaths of homology classes.
 
 \subsection{Lattice-theoretic signal processing}\label{sec:latticeconv}
 
@@ -250,19 +249,18 @@ A \introduce{lattice} $L$ is a partially ordered set in which every pair of
 elements $x,y$ has a greatest lower bound (the \introduce{meet} $x \wedge y$)
 and a least upper bound (the \introduce{join} $x \vee y$). These operations
 and their properties produce an algebraic characterization of lattices; the
-order theoretic and algebraic properties of a lattice can be recovered from each
-other. The key insight of~\cite{pueschel_discrete_2019} is that the meet and
+ordering can be recovered from the algebra and vice versa. The key insight of~\cite{pueschel_discrete_2019} is that the meet and
 join operations on a lattice define two ``shift operators'' that can be
 exploited to define convolutional filters for signals on a lattice.
 
 That is, for two signals $f,g: L \to \R$, where $L$ is a lattice, we define
 \[(f *_\wedge g)(x) = \sum_{a \in L}f(x\wedge a)g(a) \;\;\text{and}\;\; (f *_\vee g)(x) = \sum_{a \in L}f(x\vee a)g(a).\]
 
-A particularly nice class of examples of lattices are given by the sets $\R^n$
+A nice class of examples of lattices are given by the sets $\R^n$
 viewed as partially ordered sets, with the ordering $(x_1,\ldots,x_n) \leq
 (y_1,\ldots,y_n)$ whenever $x_i \leq y_i$ for all $1 \leq i \leq n$. These are,
 of course, the indexing sets for persistent homology, suggesting that lattice
-convolutions over $\R^n$ or its finite sublattices may be useful in analyzing
+convolutions over $\R^n$ or its finite sublattices may be useful in processing
 data coming from multiparameter persistence computations. 
 
 \section{Lattice Convolutional Neural Networks}\label{sec:latticeCNN}
@@ -322,7 +320,7 @@ should have support near the minimum $(0,0)$.
 \section{Experiments}
 \begin{figure}[b]
   \caption{Comparison training curves for the lattice neural network and
-    standard convolutional neural network.}\label{fig:comparison}
+    standard convolutional neural network. Results are averaged over 10 runs.}\label{fig:comparison}
     \begin{center}
     \includegraphics[width=0.49\textwidth]{lattice_accuracy.png}
     \vspace{0.2cm}
@@ -348,12 +346,14 @@ RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40 \times
 the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$--four features in total. These are then passed to the classifier, which
 produces a class prediction, in this case either ``sofa'' or ``monitor.''
 
-As the filter function on these data sets, we use
+As the filter function on these data sets, we use the \introduce{codensity} function
 \[\rho_{\text{codense}}(x;k) = \frac{1}{\frac{1}{k} \sum_{y \in N_k(x)}
     d(x,y)},\]
-where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$. This is the
-\introduce{codensity} filtration, so named because the points in the densest
-regions of $\mathcal M$ will appear first.
+where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$.
+
+% This is the
+% \introduce{codensity} filtration, so named because the points in the densest
+% regions of $\mathcal M$ will appear first.
 
 % A folk theorem is that the
 % two-parameter persistent homology of a Rips/codensity bifiltration is stable
@@ -376,7 +376,8 @@ shown in Figure~\ref{fig:comparison}.
 The lattice-based convolution and classical convolution networks perform
 similarly on the training set. However, the lattice convolution network's
 predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
-This improvement is  at the expense of noisy training as well as dramatically increased training time.  
+This improvement is  at the expense of more variability in performance during
+training. %noisy training as well as dramatically increased training time.  
 %% more discussion of what the data actually looks like
 
 \section{Discussion}
@@ -389,7 +390,6 @@ approaches to featurizing more complex invariants of persistence modules. In
 particular, the incidence algebra may offer a natural way to represent the rank
 invariant~\cite{carlsson_theory_2009} in a way amenable to convolution-like
 operations.
-
 We hope with these brief experiments to inspire further work on featurizing
 multidimensional persistence for use in machine learning algorithms.
 % anything else?
