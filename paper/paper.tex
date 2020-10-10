@@ -16,7 +16,7 @@
 %     \usepackage[final]{neurips_2020_tda}
 
 % to avoid loading the natbib package, add option nonatbib:
-\usepackage[nonatbib]{neurips_2020_tda}
+\usepackage[preprint]{neurips_2020_tda}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -124,14 +124,12 @@ Unfortunately, there is no complete
 compact barcode-like characterization of multidimensional persistence
 modules~\cite{carlsson_theory_2009}. We must make do with incomplete invariants.
 There are various algebraic invariants; in this paper we will use the
-\textit{Hilbert function} and the \textit{multi-graded Betti numbers}, both of
+\textit{Hilbert function} and the \textit{multi-graded Betti numbers}\footnote{\textit{Caveat lector:} the multi-graded (algebraic) Betti numbers need not be confused with the topological Betti numbers, i.e.~the rank of homology.}, both of
 which are $\mathbb{N}$-valued functions on the parameter space.
 %Their names arise from their relationship with the homological algebra of
 %persistence modules.
 The Hilbert function is nothing more than the pointwise
-(topological) Betti numbers\footnote{\textit{Caveat lector:} the multi-graded
-Betti numbers are not the same as the topological Betti numbers
-$\beta_i(\mathbb{X}) = \dim(H_i(\mathbb{X}))$.}, and the multi-graded Betti
+(topological) Betti numbers, and the multi-graded Betti
 numbers have a geometric interpretation in terms of births and deaths~\cite{knudson_refinement_2008}.
 
 % The \textit{rank
@@ -180,7 +178,7 @@ Applying the simplicial homology functor (with coefficients in a field $k$)
 $H_i$ to $\text{Rips}_r(\mathcal M)$ produces a sequence of vector spaces
 $PH_i(r)$. The inclusions $\text{Rips}_r(\mathcal M) \to
 \text{Rips}_{r'}(\mathcal M)$ induce maps $PH_i(r) \to PH_i(r')$, producing the
-data of \introduce{persistence module}. This structure can be compactly
+data of a \introduce{persistence module}. This structure can be compactly
 described as a functor from $\R$, viewed as a category via its standard order
 structure, to the category $\Vect_k$ of vector spaces over $k$. The simplicity
 of the category $\R$ gives these persistence modules simple structure: they
@@ -203,7 +201,7 @@ function $\rho:\mathcal M \to \R$. This data specifies a bifiltration of
 simplicial complexes given by
 \[\mathbb{X}_{r,t} = \text{Rips}_r\{x \in \mathcal M \mid \rho(x) \leq t\}.\]
 There is a natural inclusion $\mathbb{X}_{r,t} \hookrightarrow
-\mathbb{X}_{r',t'}$ whenever $(r,t) \leq (r',t')$ in the lattice $\R \times R$.
+\mathbb{X}_{r',t'}$ whenever $(r,t) \leq (r',t')$ in the lattice $\R \times \R$.
 Composing with the homology functor produces a 2-parameter persistence module
 \[PH_{i}: \R_+ \times \R \to \Vect; \quad (r,t) \mapsto H_i(X_{r,t}).\]
 
@@ -223,21 +221,20 @@ Composing with the homology functor produces a 2-parameter persistence module
 % %with features extracted from a generalized persistence module supported on $L$.
 
 
-While there does not exist a discrete set of invariants for $M$, we can extract
+While there does not exist a discrete set of invariants for  $PH_i$, we can extract
 meaningful features. Two particularly informative types of features are 
  the \introduce{Hilbert function}
-  \[\text{Hilb}: R_+ \times R \to \Z_+;\quad \mathbf{x} \mapsto \dim(M_\mathbf{x}),\] and
+  \[\text{Hilb}: \R_+ \times \R \to \Z_+;\quad \mathbf{x} \mapsto \dim(M_\mathbf{x}),\] and
 the \introduce{multi-graded Betti numbers} $\xi_j: L \to \Z_+$, for $j =
-0,1,2$. For $M = PH_i$ as above, the Hilbert function counts the number of
+0,1,2$. For $PH_i$ as above, the Hilbert function counts the number of
 connected components ($i=0$), cycles ($i=1$), or higher dimensional voids ($i >
-1$) of the complex $\mathbb{X}_{r,t}$ at each $(r,t) \in R_+\times \R$. The multi-graded
+1$) of the complex $\mathbb{X}_{r,t}$ at each $(r,t) \in \R_+\times \R$. The multi-graded
 Betti numbers, on the other hand, capture information about births
 and deaths of homology classes.
 
 \subsection{Lattice-theoretic signal processing}\label{sec:latticeconv}
 
-Classical signal processing proceeds by constructing filters for space- or
-time-indexed signals using convolutional operators. These implicitly rely on the
+Classical signal processing proceeds by constructing filters for space- or time-indexed signals using convolutional operators. These implicitly rely on the
 algebraic properties of the underlying space, in particular the existence of
 well-behaved translation operators. This fact is exploited in the general
 framework of algebraic signal processing~\cite{puschel_algebraic_2008} and
@@ -275,7 +272,7 @@ equivalent to the original.
 The data of a multidimensional persistence module is also indexed by $\R^n$ or a
 regular finite subset thereof, but its natural algebraic structure is not that
 of an abelian group. Rather, with its partial order structure, the indexing set
-is a lattice. In processing signals associated with the persistence module, it
+is a lattice. In processing signals associated with a persistence module, it
 may be useful to take this structure into account rather than imposing the
 abelian group structure implied by standard convolutions.
 
@@ -318,17 +315,6 @@ should have support near the minimum $(0,0)$.
 
 
 \section{Experiments}
-\begin{figure}[b]
-  \caption{Comparison training curves for the lattice neural network and
-    standard convolutional neural network. Results are averaged over 10 runs.}\label{fig:comparison}
-    \begin{center}
-    \includegraphics[width=0.49\textwidth]{lattice_accuracy.png}
-    \vspace{0.2cm}
-    \includegraphics[width=0.49\textwidth]{conv_accuracy.png}
-    \end{center}
-    
-\end{figure}
-
 We use a small portion of the Princeton ModelNet
 dataset~\cite{zhirong_wu_3d_2015} as a source of finite
 metric spaces. This dataset consists of hundreds of 3-dimensional CAD models
@@ -343,13 +329,11 @@ cloud in $\R^3$. This point cloud then produces a bifiltered simplicial complex,
 whose persistent homology we calculate using
 RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40 \times
 40$ points, producing lattice-indexed signals given by the Hilbert function and
-the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$--four features in total. These are then passed to the classifier, which
+the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$; four features in total. These are then passed to the classifier, which
 produces a class prediction, in this case either ``sofa'' or ``monitor.''
 
-As the filter function on these data sets, we use the \introduce{codensity} function
-\[\rho_{\text{codense}}(x;k) = \frac{1}{\frac{1}{k} \sum_{y \in N_k(x)}
-    d(x,y)},\]
-where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$.
+As the filter function on these data sets, we use the \introduce{codensity} function, $\rho_{\text{codense}}(x;k) = \left( \frac{1}{k} \sum_{y \in N_k(x)} d(x,y) \right)^{-1}$,
+where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$; we select $k=100$.
 
 % This is the
 % \introduce{codensity} filtration, so named because the points in the densest
@@ -369,6 +353,7 @@ The lattice-based convolution layers are of the form $\text{MeetConv}(x) +
 \text{JoinConv}(x)$. All convolution kernels have dimension $4 \times 4$, hidden
 convolution layers have 16 features, and the final convolution has 8 features.
 The fully connected layers have 32 features at each inner layer.
+We use a cross entropy loss function with a softmax in the final layer.
 The networks are trained using the Adam gradient algorithm with learning rate
 $0.001$ for 50 epochs. We reserve 10\% of the data for testing. Results are
 shown in Figure~\ref{fig:comparison}.
@@ -377,9 +362,18 @@ The lattice-based convolution and classical convolution networks perform
 similarly on the training set. However, the lattice convolution network's
 predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
 This improvement is  at the expense of more variability in performance during
-training. %noisy training as well as dramatically increased training time.  
-%% more discussion of what the data actually looks like
+training. (Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv} .)
 
+\begin{figure}[h]
+  \caption{Comparison training curves for the lattice neural network and
+    standard convolutional neural network. Results are averaged over 5 runs.}\label{fig:comparison}
+    \begin{center}
+%    \includegraphics[width=0.49\textwidth]{testing-accuracy.png}
+%    \vspace{0.2cm}
+%    \includegraphics[width=0.49\textwidth]{training-accuracy.png}
+	\includegraphics[width=0.85\textwidth]{figure.png}
+    \end{center}
+\end{figure}
 \section{Discussion}
 Our proposed featurization for persistence modules is rather naive, but well
 adapted to the use of lattice convolutions as a data processing method. The
@@ -394,6 +388,8 @@ We hope with these brief experiments to inspire further work on featurizing
 multidimensional persistence for use in machine learning algorithms.
 % anything else?
 
+\newpage
+\small
 \bibliographystyle{plain}
 \bibliography{latticenn}
 

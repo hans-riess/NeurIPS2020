@@ -99,16 +99,3 @@ for trial in range(n_trials):
         test_accuracy[epoch,trial] = correct/total
 torch.save(train_accuracy,'./conv_train_accuracy.pt')
 torch.save(test_accuracy,'./conv_test_accuracy.pt')
-
-mean_train_accuracy = torch.mean(train_accuracy,dim=1).cpu()
-mean_test_accuracy = torch.mean(test_accuracy,dim=1).cpu()
-
-
-figure(figsize=(10,10))
-xlabel('Epochs')
-ylabel('Accuracy')
-plot(mean_train_accuracy,'g',label='Training')
-plot(mean_test_accuracy,'b',label='Testing')
-title('Cassification accuracy: ConvClassifier')
-legend()
-savefig('conv_accuracy.png',dpi=300)

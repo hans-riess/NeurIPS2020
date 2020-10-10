@@ -42,6 +42,11 @@ Gunnar Carlsson and Afra Zomorodian.
 \newblock The {{Theory}} of {{Multidimensional Persistence}}.
 \newblock {\em Discrete \& Computational Geometry}, 42(1):71--93, July 2009.
 
+\bibitem{davey2002introduction}
+Brian~A Davey and Hilary~A Priestley.
+\newblock {\em {Introduction to lattices and order}}.
+\newblock Cambridge University Press, 2002.
+
 \bibitem{ghrist_barcodes:_2008}
 Robert Ghrist.
 \newblock Barcodes: The persistent topology of data.
