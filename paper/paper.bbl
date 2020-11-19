@@ -42,6 +42,11 @@ Gunnar Carlsson and Afra Zomorodian.
 \newblock The {{Theory}} of {{Multidimensional Persistence}}.
 \newblock {\em Discrete \& Computational Geometry}, 42(1):71--93, July 2009.
 
+\bibitem{carriere2020multiparameter}
+Mathieu Carri{\`e}re and Andrew Blumberg.
+\newblock Multiparameter persistence image for topological machine learning.
+\newblock {\em Advances in Neural Information Processing Systems}, 33, 2020.
+
 \bibitem{davey2002introduction}
 Brian~A Davey and Hilary~A Priestley.
 \newblock {\em {Introduction to lattices and order}}.
@@ -77,10 +82,20 @@ Kevin~P. Knudson.
 \newblock A refinement of multi-dimensional persistence.
 \newblock {\em Homology, Homotopy and Applications}, 10(1):259--281, 2008.
 
+\bibitem{krishnan2020invertibility}
+Sanjeevi Krishnan and Crichton Ogle.
+\newblock {Invertibility in category representations}.
+\newblock pages 1--16.
+
 \bibitem{lesnick_interactive_2015}
 Michael Lesnick and Matthew Wright.
 \newblock Interactive visualization of 2-d persistence modules.
 \newblock {\em arXiv:1512.00180 [cs, math]}, December 2015.
+
+\bibitem{mccleary2020edit}
+Alexander McCleary and Amit Patel.
+\newblock {Edit Distance and Persistence Diagrams Over Lattices}.
+\newblock pages 1--17, 2020.
 
 \bibitem{ortega_graph_2018}
 A.~Ortega, P.~Frossard, J.~Kova{\v c}evi{\'c}, J.~M.~F. Moura, and
@@ -112,6 +127,11 @@ Markus Puschel and Jos{\'E} M.~F. Moura.
   Time}}.
 \newblock {\em IEEE Transactions on Signal Processing}, 56(8):3572--3585,
   August 2008.
+
+\bibitem{vipond2020multiparameter}
+Oliver Vipond.
+\newblock Multiparameter persistence landscapes.
+\newblock {\em Journal of Machine Learning Research}, 21(61):1--38, 2020.
 
 \bibitem{wendler_powerset_2019}
 Chris Wendler, Markus P{\"u}schel, and Dan Alistarh.

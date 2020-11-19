@@ -16,7 +16,7 @@
 %     \usepackage[final]{neurips_2020_tda}
 
 % to avoid loading the natbib package, add option nonatbib:
-\usepackage[preprint]{neurips_2020_tda}
+\usepackage[final]{neurips_2020_tda}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -46,17 +46,13 @@
 % \AND instead of \And before the third author name.
 
 \author{%
-  Hans Riess  \\
-  Department of Electrical and Systems Engineering \\
+  Hans Riess \\
   University of Pennsylvania\\
-  Philadelphia, PA 19104 \\
   \texttt{hmr@seas.upenn.edu} \\
   % examples of more authors
   \And
   Jakob Hansen \\
-  Department of Mathematics \\
   Ohio State University \\
-  Columbus, OH 43210 \\
   \texttt{hansen.612@osu.edu}
   % Address \\
   % \texttt{email} \\
@@ -131,11 +127,10 @@ which are $\mathbb{N}$-valued functions on the parameter space.
 The Hilbert function is nothing more than the pointwise
 (topological) Betti numbers, and the multi-graded Betti
 numbers have a geometric interpretation in terms of births and deaths~\cite{knudson_refinement_2008}.
-
-% The \textit{rank
-% invariant}, another invariant, is shown to be complete in the case of single
-% dimensional persistence \cite{carlsson_theory_2009}; due to its difficulty to
-% compute it is not considered here.
+ The \textit{rank
+ invariant}, another invariant, is shown to be complete in the case of single
+ dimensional persistence \cite{carlsson_theory_2009}; due to its difficulty to
+ compute it is not considered here.
 
 Multidimensional persistence suffers two hindrances to its usefulness in
 machine learning. First, software for computing multidimensional persistence is
@@ -147,11 +142,12 @@ visualization rather than machine-interpretable output.
 % visualizing multi-filtrations as well as a pipline for computing the Hilbert
 % function and the multi-graded Betti numbers in degrees $0$, $1$, and $2$.
 Second, %for all the attention multidimensional persistence has received,
-there has been no activity, as far as the authors are aware, studying the extraction
-of suitable features for multidimensional persistent homology.
+there has been only very recent and preliminary activity \cite{vipond2020multiparameter,carriere2020multiparameter} focusing on extraction
+of suitable features for multidimensional persistent homology. A full-fledged deep learning pipeline
+for multidimensional persistence waits in the wings.
 %Carlsson has a little bit in a recent paper...
 
-We hope to ignite an interest in filling both of these gaps. In this paper, we
+We hope to ignite further interest in filling both of these gaps. In this paper, we
 propose a naive featurization of multidimensional persistence modules based on
 the aforementioned invariants, and design an architecture for classifying these
 persistence modules. This architecture employs a lattice-theoretic notion of
@@ -159,6 +155,16 @@ convolution, thereby respecting the order relation of the parameters of the
 persistence module. We implement our model and compare the performance of our
 proposed lattice-convolutional architecture with a (simplified) standard
 convolutional architecture.
+
+\subsection*{Related work}
+
+Very recent advances have been made to featurize multidimensional persistence modules via
+landscapes \cite{vipond2020multiparameter} and images \cite{carriere2020multiparameter}.
+Our naive approach at featurizing $2$-dimensional persistence modules has the advantage
+of being readily computable with existing software \cite{lesnick_interactive_2015}.
+Persistence modules supported on lattices are of increased interest.
+By leveraging M\"{o}bius inversion, these persistence modules are shown to generate a stable persistence diagram \cite{mccleary2020edit} as well as factor through a nice category with pseudo-inverses \cite{krishnan2020invertibility}.
+
 
 \section{Backgound}
 
@@ -185,12 +191,11 @@ of the category $\R$ gives these persistence modules simple structure: they
 decompose as direct sums of interval modules $I_{[a,b)}$, which have
 $I_{[a,b)}(r) = k$ for $a \leq r < b$ and zero otherwise. The maps are the
 identity where possible and the zero map otherwise.
-% is this the right shape for the intervals?
 
-% This representation theoretic fact gives a representation\footnote{Pun intended.} of
-% $\R$-indexed persistence modules via \introduce{barcodes} or
-% \introduce{persistence diagrams}. Each bar $I_{[a,b)}$ in the barcode represents
-% a homology class which is \introduce{born} at $a$ and \introduce{dies} at $b$.
+%This representation theoretic fact gives a representation (\textit{no pun intended}) of
+%$\R$-indexed persistence modules via \introduce{barcodes} or
+%\introduce{persistence diagrams}. Each bar $I_{[a,b)}$ in the barcode represents
+%a homology class which is \introduce{born} at $a$ and \introduce{dies} at $b$.
 
 \subsection{Multiparameter persistence}
 The Rips construction produces a filtration of simplicial complexes from a
@@ -221,16 +226,16 @@ Composing with the homology functor produces a 2-parameter persistence module
 % %with features extracted from a generalized persistence module supported on $L$.
 
 
-While there does not exist a discrete set of invariants for  $PH_i$, we can extract
+While there does not exist a complete discrete invariant for  $PH_i$, we can extract
 meaningful features. Two particularly informative types of features are 
  the \introduce{Hilbert function}
-  \[\text{Hilb}: \R_+ \times \R \to \Z_+;\quad \mathbf{x} \mapsto \dim(M_\mathbf{x}),\] and
-the \introduce{multi-graded Betti numbers} $\xi_j: L \to \Z_+$, for $j =
+  \[\text{Hilb}: \R_+ \times \R \to \Z_+;\quad (r,t) \mapsto \dim(PH_i(r,t)),\] and
+the \introduce{multi-graded Betti numbers} $\xi_j: \R_+ \times \R \to \Z_+$, for $j =
 0,1,2$. For $PH_i$ as above, the Hilbert function counts the number of
 connected components ($i=0$), cycles ($i=1$), or higher dimensional voids ($i >
 1$) of the complex $\mathbb{X}_{r,t}$ at each $(r,t) \in \R_+\times \R$. The multi-graded
 Betti numbers, on the other hand, capture information about births
-and deaths of homology classes.
+and deaths of homology classes.\footnote{ $\xi_j(r,t)$ counts the rank of the $j$th term of the free resolution of $PH_i$ at grading $(r,t)$ \cite{lesnick_interactive_2015}.}
 
 \subsection{Lattice-theoretic signal processing}\label{sec:latticeconv}
 
@@ -301,7 +306,7 @@ in the case of convolution with respect to the meet operation, and
   \sum_{(a,b) \in [m]\times [n]} f_i(x \vee a, y \vee b)g^i_j(a,b)\]
 in the case of convolution with respect to the join operation.
 
-Convolutional neural networks are uesful in part because the convolution kernels
+Convolutional neural networks are useful in part because the convolution kernels
 (here the functions $g$) can have very small support, reducing the number of
 parameters that must be learned. In the standard convolutional setting, these
 kernels are implicitly supported in a neighborhood of the origin, but the
@@ -326,7 +331,7 @@ classifier.
 
 The pipline thus begins with a 3D polyhedral model, of which $3000$ vertices are sampled to produce a point
 cloud in $\R^3$. This point cloud then produces a bifiltered simplicial complex,
-whose persistent homology we calculate using
+whose persistent homology in degree zero we calculate using
 RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40 \times
 40$ points, producing lattice-indexed signals given by the Hilbert function and
 the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$; four features in total. These are then passed to the classifier, which
@@ -354,24 +359,25 @@ The lattice-based convolution layers are of the form $\text{MeetConv}(x) +
 convolution layers have 16 features, and the final convolution has 8 features.
 The fully connected layers have 32 features at each inner layer.
 We use a cross entropy loss function with a softmax in the final layer.
-The networks are trained using the Adam gradient algorithm with learning rate
-$0.001$ for 50 epochs. We reserve 10\% of the data for testing. Results are
+The networks are trained using the Adam gradient algorithm with weight decay with learning rate
+$5 \cdot 10^{-4}$ for 50 epochs. We reserve 10\% of the data for testing. Results are
 shown in Figure~\ref{fig:comparison}.
 
 The lattice-based convolution and classical convolution networks perform
 similarly on the training set. However, the lattice convolution network's
 predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
 This improvement is  at the expense of more variability in performance during
-training. (Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv} .)
+training.
+%(Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv}.)
 
 \begin{figure}[h]
   \caption{Comparison training curves for the lattice neural network and
-    standard convolutional neural network. Results are averaged over 5 runs.}\label{fig:comparison}
+    standard convolutional neural network.}\label{fig:comparison}
     \begin{center}
 %    \includegraphics[width=0.49\textwidth]{testing-accuracy.png}
 %    \vspace{0.2cm}
 %    \includegraphics[width=0.49\textwidth]{training-accuracy.png}
-	\includegraphics[width=0.85\textwidth]{figure.png}
+%	\includegraphics[width=0.85\textwidth]{figure.png}
     \end{center}
 \end{figure}
 \section{Discussion}
