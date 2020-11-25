@@ -301,17 +301,21 @@ in the case of convolution with respect to the meet operation, and
   \sum_{(a,b) \in [m]\times [n]} f_i(x \vee a, y \vee b)g^i_j(a,b)\]
 in the case of convolution with respect to the join operation.
 
-Convolutional neural networks are uesful in part because the convolution kernels
-(here the functions $g$) can have very small support, reducing the number of
-parameters that must be learned. In the standard convolutional setting, these
-kernels are implicitly supported in a neighborhood of the origin, but the
-location of the kernel is not usually explicitly specified. In the lattice
-setting, we do need to specify where the kernel resides. In the abelian group
-case, the kernel is supported near the identity, and similarly, 
-when we treat our domain as a lattice, the kernel should be supported
-near the neutral element of the operation. That is, for a meet convolution, $g$
-should have support near the maximum $(m,n)$, and for a join convolution, $g$
-should have support near the minimum $(0,0)$.
+Traditional convolutional neural networks are useful in part because the
+convolution kernels (here the functions $g$) can have very small support,
+reducing the number of parameters that must be learned. In the standard
+convolutional setting, these kernels are implicitly supported in a neighborhood
+of the origin, but the location of the kernel is not usually explicitly
+specified. In the lattice setting, we do need to specify where the kernel
+resides. In the abelian group case, the kernel is supported near the identity,
+and similarly, when we treat our domain as a lattice, the kernel should be
+supported near the neutral element of the operation. That is, for a meet
+convolution, $g$ should be supported at the maximum $(m,n)$, and for a join
+convolution, $g$ should be supported at the minimum $(0,0)$. This ensures that
+the convolution operators are capable of preserving information at every point
+of the space. For instance, if $g(0,0) \neq 0$, then $(f \ast_{\vee} g)(x,y)$ is
+a sum of terms including $f(x,y)g(0,0)$, so all information from one layer can
+be passed to the next layer. 
 
 
 \section{Experiments}
@@ -324,45 +328,42 @@ We then compute the corresponding multidimensional persistence modules, from
 which we produce features used as an input to a convolutional neural net
 classifier.
 
-The pipline thus begins with a 3D polyhedral model, of which $3000$ vertices are sampled to produce a point
-cloud in $\R^3$. This point cloud then produces a bifiltered simplicial complex,
-whose persistent homology we calculate using
-RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40 \times
-40$ points, producing lattice-indexed signals given by the Hilbert function and
-the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$; four features in total. These are then passed to the classifier, which
-produces a class prediction, in this case either ``sofa'' or ``monitor.''
+The pipline thus begins with a 3D polyhedral model, of which $3000$ vertices are
+sampled to produce a point cloud in $\R^3$. This point cloud then produces a
+bifiltered simplicial complex, whose degree-$0$ persistent homology we calculate
+using RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40
+\times 40$ points, producing lattice-indexed signals given by the Hilbert
+function and the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$; four features
+in total. These are then passed to the classifier, which produces a class
+prediction, in this case either ``sofa'' or ``monitor.''
 
-As the filter function on these data sets, we use the \introduce{codensity} function, $\rho_{\text{codense}}(x;k) = \left( \frac{1}{k} \sum_{y \in N_k(x)} d(x,y) \right)^{-1}$,
-where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$; we select $k=100$.
-
-% This is the
-% \introduce{codensity} filtration, so named because the points in the densest
-% regions of $\mathcal M$ will appear first.
-
-% A folk theorem is that the
-% two-parameter persistent homology of a Rips/codensity bifiltration is stable
-% under non-Hausdorff perturbations: \textit{the (Rips) persistent homology of a
-%   point sample and another obtained by adding a small number of points at random
-% are close with respect to the interleaving distance}.
+As the filter function on these data sets, we use the \introduce{codensity} function \[\rho_{\text{codense}}(x;k) = \left( \frac{1}{k} \sum_{y \in N_k(x)} d(x,y) \right)^{-1},\]
+where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$; we select
+$k=100$. The name codensity is appropriate because the points in the densest
+regions of $\mathcal M$ appear earlier in the filtration. A folk theorem is that
+the two-parameter persistent homology of a Rips/codensity bifiltration is stable
+under non-Hausdorff perturbations: \textit{the (Rips) persistent homology of a
+point sample and another obtained by adding a small number of points at random
+are close with respect to the interleaving distance}.
 
 We compare the performance of two convolutional networks on this classification
 task. One uses the lattice-convolution based layers described in
 Section~\ref{sec:latticeCNN}, and the other uses standard convolutional layers.
 Each has three convolutional layers followed by three fully connected layers.
-The lattice-based convolution layers are of the form $\text{MeetConv}(x) +
-\text{JoinConv}(x)$. All convolution kernels have dimension $4 \times 4$, hidden
-convolution layers have 16 features, and the final convolution has 8 features.
-The fully connected layers have 32 features at each inner layer.
-We use a cross entropy loss function with a softmax in the final layer.
-The networks are trained using the Adam gradient algorithm with learning rate
-$0.001$ for 50 epochs. We reserve 10\% of the data for testing. Results are
-shown in Figure~\ref{fig:comparison}.
+The lattice-based convolution layers are of the form $\alpha\text{MeetConv}(x) +
+(1-\alpha)\text{JoinConv}(x)$ for a hyperparameter $\alpha \in [0,1]$. All
+convolution kernels have dimension $4 \times 4$, hidden convolution layers have
+16 features, and the final convolution has 8 features. The fully connected
+layers have 32 features at each inner layer. We use a cross entropy loss
+function with a softmax in the final layer. The networks are trained using the
+Adam gradient algorithm with learning rate $0.001$ for 50 epochs. We reserve
+10\% of the data for testing. Results are shown in Figure~\ref{fig:comparison}.
 
-The lattice-based convolution and classical convolution networks perform
-similarly on the training set. However, the lattice convolution network's
-predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
-This improvement is  at the expense of more variability in performance during
-training. (Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv} .)
+% The lattice-based convolution and classical convolution networks perform
+% similarly on the training set. However, the lattice convolution network's
+% predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
+% This improvement is  at the expense of more variability in performance during
+% training. (Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv} .)
 
 \begin{figure}[h]
   \caption{Comparison training curves for the lattice neural network and
@@ -371,7 +372,7 @@ training. (Our code is available at \texttt{https://github.com/alfred-tarski/lat
 %    \includegraphics[width=0.49\textwidth]{testing-accuracy.png}
 %    \vspace{0.2cm}
 %    \includegraphics[width=0.49\textwidth]{training-accuracy.png}
-	\includegraphics[width=0.85\textwidth]{figure.png}
+%	\includegraphics[width=0.85\textwidth]{figure.png}
     \end{center}
 \end{figure}
 \section{Discussion}
@@ -386,7 +387,6 @@ invariant~\cite{carlsson_theory_2009} in a way amenable to convolution-like
 operations.
 We hope with these brief experiments to inspire further work on featurizing
 multidimensional persistence for use in machine learning algorithms.
-% anything else?
 
 \newpage
 \small
