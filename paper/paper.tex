@@ -156,14 +156,13 @@ persistence module. We implement our model and compare the performance of our
 proposed lattice-convolutional architecture with a (simplified) standard
 convolutional architecture.
 
-\subsection*{Related work}
-
+\paragraph{Related work}
 Very recent advances have been made to featurize multidimensional persistence modules via
 landscapes \cite{vipond2020multiparameter} and images \cite{carriere2020multiparameter}.
 Our naive approach at featurizing $2$-dimensional persistence modules has the advantage
 of being readily computable with existing software \cite{lesnick_interactive_2015}.
 Persistence modules supported on lattices are of increased interest.
-By leveraging M\"{o}bius inversion, these persistence modules are shown to generate a stable persistence diagram \cite{mccleary2020edit} as well as factor through a nice category with pseudo-inverses \cite{krishnan2020invertibility}.
+By leveraging M\"{o}bius inversion, these persistence modules are shown to generate a stable persistence diagram \cite{mccleary2020edit} as well as factor through a convenient category with pseudo-inverses \cite{krishnan2020invertibility}.
 
 
 \section{Backgound}
@@ -306,6 +305,7 @@ in the case of convolution with respect to the meet operation, and
   \sum_{(a,b) \in [m]\times [n]} f_i(x \vee a, y \vee b)g^i_j(a,b)\]
 in the case of convolution with respect to the join operation.
 
+\paragraph{Remark}
 Traditional convolutional neural networks are useful in part because the
 convolution kernels (here the functions $g$) can have very small support,
 reducing the number of parameters that must be learned. In the standard
@@ -322,7 +322,7 @@ of the space. For instance, if $g(0,0) \neq 0$, then $(f \ast_{\vee} g)(x,y)$ is
 a sum of terms including $f(x,y)g(0,0)$, so all information from one layer can
 be passed to the next layer. 
 \section{Experiments}
-We use a small portion of the Princeton ModelNet
+We use a large portion of the Princeton ModelNet
 dataset~\cite{zhirong_wu_3d_2015} as a source of finite
 metric spaces. This dataset consists of hundreds of 3-dimensional CAD models
 representing objects from 10 classes. We select two of the classes and sample
@@ -338,28 +338,34 @@ using RIVET~\cite{lesnick_interactive_2015}, sampled at a discrete grid of $40
 \times 40$ points, producing lattice-indexed signals given by the Hilbert
 function and the multi-graded Betti numbers $\xi_0, \xi_1, \xi_2$; four features
 in total. These are then passed to the classifier, which produces a class
-prediction, in this case either ``sofa'' or ``monitor.''
+prediction, in this case one of 10 possible household objects.
 
 As the filter function on these data sets, we use the \introduce{codensity} function \[\rho_{\text{codense}}(x;k) = \left( \frac{1}{k} \sum_{y \in N_k(x)} d(x,y) \right)^{-1},\]
 where $N_k(x)$ is the set of the $k$ nearest neighbors to $x$; we select
-$k=100$. The name codensity is appropriate because the points in the densest
+$k=100$.
+\paragraph{Remark}
+The name codensity is appropriate because the points in the densest
 regions of $\mathcal M$ appear earlier in the filtration. A folk theorem is that
-the two-parameter persistent homology of a Rips/codensity bifiltration is stable
-under non-Hausdorff perturbations: \textit{the (Rips) persistent homology of a
-point sample and another obtained by adding a small number of points at random
-are close with respect to the interleaving distance}.
+the 2-parameter persistent homology of a Rips/codensity bifiltration is stable (w.r.t.~interleaving distance)
+under non-Hausdorff noise (e.g. adding or removing a small number of point samples).
+%: \textit{the (Rips) persistent homology of a
+%point sample and another obtained by adding a (relatively) small number of points at random
+%are close with respect to the interleaving distance}.
 
 We compare the performance of two convolutional networks on this classification
 task. One uses the lattice-convolution based layers described in
 Section~\ref{sec:latticeCNN}, and the other uses standard convolutional layers.
-Each has three convolutional layers followed by three fully connected layers.
-The lattice-based convolution layers are of the form $\alpha\text{MeetConv}(x) +
-(1-\alpha)\text{JoinConv}(x)$ for a hyperparameter $\alpha \in [0,1]$. All
+Each has three convolutional layers followed by two fully connected layers.
+The lattice-based convolution layers are of the form $\alpha \cdot \text{MeetConv}(x) +
+(1-\alpha)\cdot\text{JoinConv}(x)$ for a hyperparameter $\alpha \in [0,1]$. All
 convolution kernels have dimension $4 \times 4$, hidden convolution layers have
-16 features, and the final convolution has 8 features. The fully connected
-layers have 32 features at each inner layer. We use a cross entropy loss
-function with a softmax in the final layer. The networks are trained using the
-Adam gradient algorithm with learning rate $0.001$ for 50 epochs. We reserve
+16 features, and the final convolution layer has 8 features. The first two convolution
+layers are followed by max-pooling layers with a $2 \times 2$ kernel.
+The inner fully connected layer has 32 features. We use a cross entropy loss
+function with a softmax in the final layer. The lattice-based convolutional architecture
+is summarized in Figure~\ref{fig:architecture}.
+The networks are trained using the
+Adam gradient algorithm with learning rate $10^{-4}$ for 300 epochs. We reserve
 10\% of the data for testing. Results are shown in Figure~\ref{fig:comparison}.
 
 % The lattice-based convolution and classical convolution networks perform
@@ -367,17 +373,9 @@ Adam gradient algorithm with learning rate $0.001$ for 50 epochs. We reserve
 % predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
 % This improvement is  at the expense of more variability in performance during
 % training. (Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv} .)
-\begin{figure}[h]
-  \caption{Comparison training curves for the lattice neural network and
-    standard convolutional neural network.}\label{fig:comparison}
-    \begin{center}
-%    \includegraphics[width=0.49\textwidth]{testing-accuracy.png}
-%    \vspace{0.2cm}
-%    \includegraphics[width=0.49\textwidth]{training-accuracy.png}
-%	\includegraphics[width=0.85\textwidth]{figure.png}
-    \end{center}
-\end{figure}
+
 \section{Discussion}
+
 Our proposed featurization for persistence modules is rather naive, but well
 adapted to the use of lattice convolutions as a data processing method. The
 lattice convolutional neural network shows promise as a method for classifying
@@ -390,9 +388,27 @@ operations.
 We hope with these brief experiments to inspire further work on featurizing
 multidimensional persistence for use in machine learning algorithms.
 
-\newpage
+\begin{figure}[h!]
+  \caption{The architecture of our lattice-based convolutional neural network.}\label{fig:architecture}
+    \begin{center}
+    \includegraphics[width=0.75\textwidth]{nn.jpg}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+  \caption{Comparison learning curves for the lattice neural network and
+    standard convolutional neural network.}\label{fig:comparison}
+    \begin{center}
+    %\includegraphics[width=0.75\textwidth]{training.png}
+    \includegraphics[width=0.9\textwidth]{testing.png}
+    \end{center}
+\end{figure}
+
+\section*{Acknowledgments}
+The authors would like to thank Chris Wendler for replicating our original experiment. We would like to thank the reviewers for providing helpful feedback. The author [HR] is partially supported by Office of Naval Research (Grant No. N00014-1442-16-1-2010).
 \small
 \bibliographystyle{plain}
 \bibliography{latticenn}
+
 
 \end{document}
