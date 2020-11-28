@@ -320,12 +320,19 @@ convolution, $g$ should be supported at the minimum $(0,0)$. This ensures that
 the convolution operators are capable of preserving information at every point
 of the space. For instance, if $g(0,0) \neq 0$, then $(f \ast_{\vee} g)(x,y)$ is
 a sum of terms including $f(x,y)g(0,0)$, so all information from one layer can
-be passed to the next layer. 
+be passed to the next layer. A bit more is necessary to avoid degenerate
+convolutions. A kernel supported in a geometrically small neighborhood of the
+neutral element results in trivial receptive fields for most neurons. For
+example, if $(x,y)$ is greater than the maximal element of the support of $g$,
+$(f \ast_{\vee} g)(x,y)$ is simply a scalar multiple of $f(x,y)$. As a result,
+we hypothesize that the appropriate support sets for lattice-convolutional kernels
+are evenly-spaced sublattices including both $(0,0)$ and $(m,n)$.
+
 \section{Experiments}
-We use a large portion of the Princeton ModelNet
+We use a portion of the Princeton ModelNet
 dataset~\cite{zhirong_wu_3d_2015} as a source of finite
 metric spaces. This dataset consists of hundreds of 3-dimensional CAD models
-representing objects from 10 classes. We select two of the classes and sample
+representing objects from 10 classes. We sample
 points from the 3D models to produce finite metric spaces embedded in $\R^3$.
 We then compute the corresponding multidimensional persistence modules, from
 which we produce features used as an input to a convolutional neural net
@@ -357,15 +364,19 @@ task. One uses the lattice-convolution based layers described in
 Section~\ref{sec:latticeCNN}, and the other uses standard convolutional layers.
 Each has three convolutional layers followed by two fully connected layers.
 The lattice-based convolution layers are of the form $\alpha \cdot \text{MeetConv}(x) +
-(1-\alpha)\cdot\text{JoinConv}(x)$ for a hyperparameter $\alpha \in [0,1]$. All
+(1-\alpha)\cdot\text{JoinConv}(x)$ for a hyperparameter $\alpha \in [0,1]$. We
+set $\alpha = \frac{1}{2}$. All
 convolution kernels have dimension $4 \times 4$, hidden convolution layers have
 16 features, and the final convolution layer has 8 features. The first two convolution
-layers are followed by max-pooling layers with a $2 \times 2$ kernel.
+layers are followed by max-pooling layers with a $2 \times 2$ kernel. For the
+lattice convolutional layers, the support of the kernel lay in an evenly spaced
+$4 \times 4$ grid of points in $[m]\times [n]$, while the standard convolutional
+layers had a traditional contiguously supported kernel.
 The inner fully connected layer has 32 features. We use a cross entropy loss
 function with a softmax in the final layer. The lattice-based convolutional architecture
 is summarized in Figure~\ref{fig:architecture}.
 The networks are trained using the
-Adam gradient algorithm with learning rate $10^{-4}$ for 300 epochs. We reserve
+Adam gradient algorithm with learning rate $2 \times 10^{-4}$ for 300 epochs. We reserve
 10\% of the data for testing. Results are shown in Figure~\ref{fig:comparison}.
 
 % The lattice-based convolution and classical convolution networks perform
@@ -373,6 +384,16 @@ Adam gradient algorithm with learning rate $10^{-4}$ for 300 epochs. We reserve
 % predictions generalize more accurately to the testing set ($\approx 7\%$ improvement in testing accuracy).
 % This improvement is  at the expense of more variability in performance during
 % training. (Our code is available at \texttt{https://github.com/alfred-tarski/latticeconv} .)
+
+The lattice convolutional network slightly underperforms the standard
+convolutional classifier. This is somewhat disappointing, and perhaps indicates
+that the relevant information encoded in degree-0 persistent homology is best
+captured with a geometric notion of locality in $\R^2$.\footnote{Due to a coding
+  error, an earlier version of this paper gave results incorrectly showing the
+  lattice convolutional network outperforming the traditional network.} This
+work has not exhausted the possibilities for lattice convolutions in
+multidimensional persistence, but does suggest circumspection in evaluating
+their future use.
 
 \section{Discussion}
 
@@ -400,12 +421,16 @@ multidimensional persistence for use in machine learning algorithms.
     standard convolutional neural network.}\label{fig:comparison}
     \begin{center}
     %\includegraphics[width=0.75\textwidth]{training.png}
-    \includegraphics[width=0.9\textwidth]{testing.png}
+      \includegraphics[width=\textwidth]{test_results_2.png}
     \end{center}
 \end{figure}
 
 \section*{Acknowledgments}
-The authors would like to thank Chris Wendler for replicating our original experiment. We would like to thank the reviewers for providing helpful feedback. The author [HR] is partially supported by Office of Naval Research (Grant No. N00014-1442-16-1-2010).
+The authors would like to thank Chris Wendler for replicating our original
+experiment. We would like to thank the reviewers for providing helpful feedback.
+The author [HR] is partially supported by Office of Naval Research (Grant No.
+N00014-1442-16-1-2010), and the author [JH] is supported by the National Science
+Foundation (NSF-DMS \#1547357).
 \small
 \bibliographystyle{plain}
 \bibliography{latticenn}
